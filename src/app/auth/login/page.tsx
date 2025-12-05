@@ -1,4 +1,14 @@
+import Loginform from "@/components/Forms/Loginform";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/shadcnui/card";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
 	title: "Login | Wallpaper Studio App",
@@ -8,7 +18,34 @@ export const metadata: Metadata = {
 const page = () => {
 	return (
 		<section className="grid h-[90dvh] place-items-center">
-			<div className="">login</div>
+			<Card className="w-sm">
+				<CardHeader className="gap-3">
+					<CardTitle className="text-center text-3xl font-semibold">
+						Welcome back
+					</CardTitle>
+
+					<CardDescription className="text-center text-lg leading-5">
+						Enter your email below to login to your account
+					</CardDescription>
+				</CardHeader>
+
+				<CardContent>
+					<Loginform />
+				</CardContent>
+
+				<CardFooter className="grid place-items-center text-xl font-light">
+					You don&apos;t have an account?
+					<div>
+						Please
+						<Link
+							href={"/auth/register"}
+							className="mx-1 text-blue-600 underline">
+							Register
+						</Link>
+						Now.
+					</div>
+				</CardFooter>
+			</Card>
 		</section>
 	);
 };
