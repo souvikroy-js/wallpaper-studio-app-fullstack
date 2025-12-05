@@ -3,14 +3,17 @@
 import { LoginType } from "@/lib/types";
 import { loginSchema } from "@/lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EyeIcon, EyeOffIcon, Loader2Icon, LockIcon } from "lucide-react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Input } from "../shadcnui/input";
-import { Field, FieldError, FieldLabel } from "../shadcnui/field";
-import { Checkbox } from "../shadcnui/checkbox";
 import { Button } from "../shadcnui/button";
-import { Loader2Icon, LockIcon } from "lucide-react";
+import { Checkbox } from "../shadcnui/checkbox";
+import { Field, FieldError, FieldLabel } from "../shadcnui/field";
+import { Input } from "../shadcnui/input";
 
 const Loginform = () => {
+	const [showPassword, setShowPassword] = useState(false);
+
 	const {
 		handleSubmit,
 		control,
@@ -61,14 +64,30 @@ const Loginform = () => {
 				render={({ field, fieldState }) => (
 					<Field data-invalid={fieldState.invalid}>
 						<FieldLabel htmlFor={field.name}>Password</FieldLabel>
-						<Input
-							{...field}
-							id={field.name}
-							aria-invalid={fieldState.invalid}
-							type="password"
-							placeholder="Enter your password"
-							autoComplete="current-password"
-						/>
+						<div className="relative">
+							<Input
+								{...field}
+								id={field.name}
+								aria-invalid={fieldState.invalid}
+								type={showPassword ? "text" : "password"}
+								placeholder="Enter your password"
+								autoComplete="current-password"
+							/>
+							{/* Show / Hide Toggle */}
+
+							<button
+								type="button"
+								// variant="ghost"
+								onClick={() => setShowPassword(!showPassword)}
+								className="absolute top-1/2 right-2 h-6 w-6 -translate-y-1/2">
+								{showPassword ? (
+									<EyeOffIcon className="h-5 w-5" />
+								) : (
+									<EyeIcon className="h-5 w-5" />
+								)}
+							</button>
+						</div>
+
 						{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
 					</Field>
 				)}

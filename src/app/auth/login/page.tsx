@@ -21,7 +21,7 @@ const page = () => {
 			<Card className="w-sm">
 				<CardHeader className="gap-3">
 					<CardTitle className="text-center text-3xl font-semibold">
-						Welcome back
+						Welcome back !
 					</CardTitle>
 
 					<CardDescription className="text-center text-lg leading-5">
