@@ -1,4 +1,4 @@
-import Loginform from "@/components/Forms/Loginform";
+import LoginForm from "@/components/Forms/LoginForm";
 import {
 	Card,
 	CardContent,
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 const page = () => {
 	return (
 		<section className="grid h-[90dvh] place-items-center">
-			<Card className="w-sm">
+			<Card className="w-sm drop-shadow-lg">
 				<CardHeader className="gap-3">
 					<CardTitle className="text-center text-3xl font-semibold">
 						Welcome back !
@@ -30,7 +30,7 @@ const page = () => {
 				</CardHeader>
 
 				<CardContent>
-					<Loginform />
+					<LoginForm />
 				</CardContent>
 
 				<CardFooter className="grid place-items-center text-xl font-light">

@@ -11,7 +11,7 @@ import { Checkbox } from "../shadcnui/checkbox";
 import { Field, FieldError, FieldLabel } from "../shadcnui/field";
 import { Input } from "../shadcnui/input";
 
-const Loginform = () => {
+const LoginForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
 
 	const {
@@ -43,7 +43,9 @@ const Loginform = () => {
 				control={control}
 				render={({ field, fieldState }) => (
 					<Field data-invalid={fieldState.invalid}>
-						<FieldLabel htmlFor={field.name}>Email</FieldLabel>
+						<FieldLabel htmlFor={field.name}>
+							Email <span className="font-bold text-red-500">*</span>
+						</FieldLabel>
 						<Input
 							{...field}
 							id={field.name}
@@ -63,7 +65,9 @@ const Loginform = () => {
 				control={control}
 				render={({ field, fieldState }) => (
 					<Field data-invalid={fieldState.invalid}>
-						<FieldLabel htmlFor={field.name}>Password</FieldLabel>
+						<FieldLabel htmlFor={field.name}>
+							Password <span className="font-bold text-red-500">*</span>
+						</FieldLabel>
 						<div className="relative">
 							<Input
 								{...field}
@@ -79,11 +83,11 @@ const Loginform = () => {
 								type="button"
 								// variant="ghost"
 								onClick={() => setShowPassword(!showPassword)}
-								className="absolute top-1/2 right-2 h-6 w-6 -translate-y-1/2">
+								className="absolute top-1/2 right-2 h-6 w-6 -translate-y-1/2 cursor-pointer">
 								{showPassword ? (
-									<EyeOffIcon className="h-5 w-5" />
-								) : (
 									<EyeIcon className="h-5 w-5" />
+								) : (
+									<EyeOffIcon className="h-5 w-5" />
 								)}
 							</button>
 						</div>
@@ -131,4 +135,4 @@ const Loginform = () => {
 	);
 };
 
-export default Loginform;
+export default LoginForm;
