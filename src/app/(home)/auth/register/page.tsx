@@ -21,7 +21,7 @@ const page = () => {
 			<Card className="w-sm drop-shadow-lg dark:drop-shadow-lg dark:drop-shadow-gray-700">
 				<CardHeader className="gap-3">
 					<CardTitle className="text-center text-3xl font-semibold">
-						Welcome back !
+						Create Account
 					</CardTitle>
 
 					<CardDescription className="text-center text-lg leading-5">
