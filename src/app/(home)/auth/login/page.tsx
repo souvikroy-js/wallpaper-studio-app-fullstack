@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 const page = () => {
 	return (
 		<section className="grid h-[90dvh] place-items-center">
-			<Card className="w-sm drop-shadow-lg">
+			<Card className="w-sm drop-shadow-lg dark:drop-shadow-lg dark:drop-shadow-gray-700">
 				<CardHeader className="gap-3">
 					<CardTitle className="text-center text-3xl font-semibold">
 						Welcome back !
@@ -39,7 +39,7 @@ const page = () => {
 						Please
 						<Link
 							href={"/auth/register"}
-							className="mx-1 text-blue-600 underline">
+							className="mx-2 text-blue-600 underline hover:font-normal">
 							Register
 						</Link>
 						Now.
