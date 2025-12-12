@@ -21,8 +21,8 @@ const LoginForm = () => {
 	} = useForm({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
-			loginEmail: "",
-			loginPassword: "",
+			email: "",
+			password: "",
 			rememberMe: true,
 		},
 		mode: "all",
@@ -39,7 +39,7 @@ const LoginForm = () => {
 			noValidate>
 			{/* Email field */}
 			<Controller
-				name="loginEmail"
+				name="email"
 				control={control}
 				render={({ field, fieldState }) => (
 					<Field data-invalid={fieldState.invalid}>
@@ -61,7 +61,7 @@ const LoginForm = () => {
 
 			{/* Password field */}
 			<Controller
-				name="loginPassword"
+				name="password"
 				control={control}
 				render={({ field, fieldState }) => (
 					<Field data-invalid={fieldState.invalid}>

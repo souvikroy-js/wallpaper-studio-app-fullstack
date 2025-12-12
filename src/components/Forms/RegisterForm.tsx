@@ -9,27 +9,46 @@ import { Field, FieldError, FieldLabel } from "../shadcnui/field";
 import { Input } from "../shadcnui/input";
 import { EyeIcon, EyeOffIcon, Loader2Icon, LockIcon } from "lucide-react";
 import { Button } from "../shadcnui/button";
+import signUp from "@/hooks/signUp";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
+
+	const { replace } = useRouter();
 
 	const {
 		handleSubmit,
 		control,
 		formState: { isSubmitting },
+		reset,
 	} = useForm({
 		resolver: zodResolver(registerSchema),
 		defaultValues: {
-			registerName: "",
-			registerEmail: "",
-			registerPassword: "",
-			registerConfirmPassword: "",
+			name: "",
+			email: "",
+			password: "",
+			confirmPassword: "",
 		},
 		mode: "all",
 	});
 
 	const loginButtonHandeler = async (registerData: RegisterType) => {
-		console.log(registerData);
+		await new Promise((r) => setTimeout(r, 1500));
+
+		const { isSuccess, message } = await signUp(registerData);
+
+		if (!isSuccess) {
+			toast.error(message);
+		}
+
+		if (isSuccess) {
+			toast.success(message);
+			reset();
+
+			replace("/auth/login");
+		}
 	};
 
 	return (
@@ -40,7 +59,7 @@ const RegisterForm = () => {
 				noValidate>
 				{/* Name field */}
 				<Controller
-					name="registerName"
+					name="name"
 					control={control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
@@ -62,7 +81,7 @@ const RegisterForm = () => {
 
 				{/* Email field */}
 				<Controller
-					name="registerEmail"
+					name="email"
 					control={control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
@@ -84,7 +103,7 @@ const RegisterForm = () => {
 
 				{/* Password field */}
 				<Controller
-					name="registerPassword"
+					name="password"
 					control={control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
@@ -122,7 +141,7 @@ const RegisterForm = () => {
 
 				{/* Confirm password field */}
 				<Controller
-					name="registerConfirmPassword"
+					name="confirmPassword"
 					control={control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
