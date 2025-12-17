@@ -10,14 +10,20 @@ import { Button } from "../shadcnui/button";
 import { Checkbox } from "../shadcnui/checkbox";
 import { Field, FieldError, FieldLabel } from "../shadcnui/field";
 import { Input } from "../shadcnui/input";
+import signIn from "@/hooks/signIn";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
+
+	const { replace } = useRouter();
 
 	const {
 		handleSubmit,
 		control,
 		formState: { isSubmitting },
+		reset,
 	} = useForm({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
@@ -29,7 +35,18 @@ const LoginForm = () => {
 	});
 
 	const loginButtonHandeler = async (loginData: LoginType) => {
-		console.log(loginData);
+		const { isSuccess, message } = await signIn(loginData);
+
+		if (!isSuccess) {
+			toast.error(message);
+		}
+
+		if (isSuccess) {
+			toast.success(message);
+			reset();
+
+			replace("/dashboard");
+		}
 	};
 
 	return (

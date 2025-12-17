@@ -25,7 +25,7 @@ const page = () => {
 					</CardTitle>
 
 					<CardDescription className="text-center text-lg leading-5">
-						Enter your email below to login to your account
+						Enter your email below to login your account
 					</CardDescription>
 				</CardHeader>
 
