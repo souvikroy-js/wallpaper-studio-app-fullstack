@@ -1,5 +1,6 @@
 import ThemeToggleButton from "@/components/ThemeToggleButton";
 import Link from "next/link";
+import SessionNavbar from "./SessionNavbar";
 
 const Header = () => {
 	return (
@@ -17,6 +18,8 @@ const Header = () => {
 
 				<nav className="flex items-center gap-4">
 					<Link href={"/"}>Home</Link>
+
+					<SessionNavbar />
 
 					<ThemeToggleButton />
 				</nav>
