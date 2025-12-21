@@ -5,31 +5,35 @@ import { Field, FieldError, FieldLabel } from "../shadcnui/field";
 import { Input } from "../shadcnui/input";
 import { Button } from "../shadcnui/button";
 import { Loader2Icon, PencilLineIcon } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { nameSchema } from "@/lib/zodSchema";
+import { NameType } from "@/lib/types";
+import { useState } from "react";
 
-const ProfileForm = () => {
+type ProfileFormProps = {
+	userName: string;
+};
+
+const ProfileForm = ({ userName }: ProfileFormProps) => {
+	const [isEditing, setIsEditing] = useState(false);
+
 	const {
 		handleSubmit,
 		control,
 		formState: { isSubmitting, isDirty },
 	} = useForm({
-		// resolver: zodResolver(nameSchema),
-		// defaultValues: {
-		// 	name: userName,
-		// },
+		resolver: zodResolver(nameSchema),
+
+		defaultValues: {
+			name: userName,
+		},
+
 		mode: "all",
 	});
 
-	const nameHandeler = async () => {
-		// const { isSuccess, message } = await updateProfileDetails(name);
-
+	const nameHandeler = async (name: NameType) => {
 		await new Promise((r) => setTimeout(r, 1500));
 
-		// if (!isSuccess) {
-		// 	toast.error(message);
-		// }
-		// if (isSuccess) {
-		// 	toast.success(message);
-		// }
 		console.log(name);
 	};
 
@@ -46,13 +50,26 @@ const ProfileForm = () => {
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
 							<FieldLabel htmlFor={field.name}>Name</FieldLabel>
-							<Input
-								{...field}
-								id={field.name}
-								aria-invalid={fieldState.invalid}
-								placeholder="Enter your name"
-								autoComplete="name"
-							/>
+							<div className="relative">
+								<Input
+									{...field}
+									id={field.name}
+									aria-invalid={fieldState.invalid}
+									placeholder="Enter your name"
+									autoComplete="name"
+									disabled={!isEditing}
+								/>
+
+								<button
+									onClick={() => {
+										setIsEditing(true);
+									}}
+									type="button"
+									className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer">
+									<PencilLineIcon size={18} />
+								</button>
+							</div>
+
 							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
 						</Field>
 					)}

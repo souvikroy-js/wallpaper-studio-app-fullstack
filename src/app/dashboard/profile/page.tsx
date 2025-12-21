@@ -8,6 +8,7 @@ import {
 } from "@/components/shadcnui/card";
 import { auth } from "@/lib/betterAuth/auth";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 const page = async () => {
 	const session = await auth.api.getSession({
@@ -15,34 +16,36 @@ const page = async () => {
 	});
 
 	if (!session) {
-		return <div>Not authenticated</div>;
+		return redirect("/auth/login");
 	}
 
-	console.log(session.user.image);
+	const { user } = session;
 
 	return (
 		<>
 			<section className="grid h-[90dvh] place-items-center">
-				<Card className="w-sm">
-					<CardHeader className="">
-						<CardTitle className="text-center text-3xl font-semibold">
-							Profile Picture
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<AvatarForm previousImage={session.user.image as string} />
-					</CardContent>
-				</Card>
+				<Card className="w-lg items-center">
+					<Card className="w-sm">
+						<CardHeader className="">
+							<CardTitle className="text-center text-3xl font-semibold">
+								Profile Picture
+							</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<AvatarForm previousImage={user.image as string} />
+						</CardContent>
+					</Card>
 
-				<Card className="w-sm">
-					<CardHeader className="">
-						<CardTitle className="text-center text-3xl font-semibold">
-							Profile Details
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<ProfileForm />
-					</CardContent>
+					<Card className="w-sm">
+						<CardHeader className="">
+							<CardTitle className="text-center text-3xl font-semibold">
+								Profile Details
+							</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<ProfileForm userName={user.name} />
+						</CardContent>
+					</Card>
 				</Card>
 			</section>
 		</>

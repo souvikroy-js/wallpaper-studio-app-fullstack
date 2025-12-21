@@ -30,3 +30,7 @@ export const registerSchema = z
 		error: "Password didn't match",
 		path: ["registerConfirmPassword"],
 	});
+
+export const nameSchema = z.object({
+	name: z.string().min(2, { error: "Name must be minimum 2 characters long" }),
+});

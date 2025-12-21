@@ -11,11 +11,11 @@ type AvatarFormProps = {
 };
 
 const AvatarForm = ({ previousImage }: AvatarFormProps) => {
-	console.log(previousImage);
+	// console.log(previousImage);
 
 	const [isFile, setIsFile] = useState(false);
 
-	const { openFilePicker, filesContent, clear, plainFiles } = useFilePicker({
+	const { openFilePicker, filesContent, clear } = useFilePicker({
 		readAs: "DataURL",
 		accept: "image/*",
 		multiple: false,
@@ -35,8 +35,7 @@ const AvatarForm = ({ previousImage }: AvatarFormProps) => {
 				{!isFile && (
 					<div className="grid justify-center gap-2">
 						<Image
-							// src={`/upload/avatar/${previousImage}`}
-							src="https://placehold.co/1920x1080"
+							src={`/upload/avatar/${previousImage}`}
 							alt="Avatar Image"
 							width={240}
 							height={240}

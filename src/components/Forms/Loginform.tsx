@@ -35,6 +35,7 @@ const LoginForm = () => {
 	});
 
 	const loginButtonHandeler = async (loginData: LoginType) => {
+		await new Promise((r) => setTimeout(r, 1500));
 		const { isSuccess, message } = await signIn(loginData);
 
 		if (!isSuccess) {
