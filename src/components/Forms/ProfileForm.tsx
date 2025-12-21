@@ -1,0 +1,82 @@
+"use client";
+
+import { Controller, useForm } from "react-hook-form";
+import { Field, FieldError, FieldLabel } from "../shadcnui/field";
+import { Input } from "../shadcnui/input";
+import { Button } from "../shadcnui/button";
+import { Loader2Icon, PencilLineIcon } from "lucide-react";
+
+const ProfileForm = () => {
+	const {
+		handleSubmit,
+		control,
+		formState: { isSubmitting, isDirty },
+	} = useForm({
+		// resolver: zodResolver(nameSchema),
+		// defaultValues: {
+		// 	name: userName,
+		// },
+		mode: "all",
+	});
+
+	const nameHandeler = async () => {
+		// const { isSuccess, message } = await updateProfileDetails(name);
+
+		await new Promise((r) => setTimeout(r, 1500));
+
+		// if (!isSuccess) {
+		// 	toast.error(message);
+		// }
+		// if (isSuccess) {
+		// 	toast.success(message);
+		// }
+		console.log(name);
+	};
+
+	return (
+		<>
+			<form
+				onSubmit={handleSubmit(nameHandeler)}
+				className="grid gap-6"
+				noValidate>
+				{/* Name field */}
+				<Controller
+					name="name"
+					control={control}
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<FieldLabel htmlFor={field.name}>Name</FieldLabel>
+							<Input
+								{...field}
+								id={field.name}
+								aria-invalid={fieldState.invalid}
+								placeholder="Enter your name"
+								autoComplete="name"
+							/>
+							{fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+						</Field>
+					)}
+				/>
+
+				<Button
+					className="w-full cursor-pointer"
+					type="submit"
+					disabled={!isDirty}>
+					{isSubmitting ? (
+						<>
+							<Loader2Icon className="animate-spin" />
+							Updating...
+						</>
+					) : (
+						<>
+							<PencilLineIcon />
+							Update
+						</>
+					)}
+				</Button>
+			</form>
+		</>
+	);
+};
+
+export default ProfileForm;
