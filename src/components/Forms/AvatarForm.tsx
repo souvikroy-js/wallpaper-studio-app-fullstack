@@ -4,18 +4,20 @@ import Image from "next/image";
 import { Button } from "../shadcnui/button";
 import { useState } from "react";
 import { useFilePicker } from "use-file-picker";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, TrashIcon, UploadIcon } from "lucide-react";
+import updateAvatar from "@/hooks/server/updateAvatar";
+import { toast } from "react-toastify";
 
 type AvatarFormProps = {
 	previousImage: string;
 };
 
 const AvatarForm = ({ previousImage }: AvatarFormProps) => {
-	// console.log(previousImage);
-
 	const [isFile, setIsFile] = useState(false);
 
-	const { openFilePicker, filesContent, clear } = useFilePicker({
+	const [isLoader, setIsLoader] = useState(false);
+
+	const { openFilePicker, filesContent, clear, plainFiles } = useFilePicker({
 		readAs: "DataURL",
 		accept: "image/*",
 		multiple: false,
@@ -28,6 +30,27 @@ const AvatarForm = ({ previousImage }: AvatarFormProps) => {
 		onFilesSuccessfullySelected: () => setIsFile(true),
 		onClear: () => setIsFile(false),
 	});
+
+	const uploadBtnFn = async () => {
+		setIsLoader(true);
+		await new Promise((r) => setTimeout(r, 1500));
+
+		const { isSuccess, massage } = await updateAvatar(
+			plainFiles[0],
+			previousImage,
+		);
+
+		if (!isSuccess) {
+			toast.error(massage);
+		}
+
+		if (isSuccess) {
+			toast.success(massage);
+			clear();
+		}
+
+		setIsLoader(false);
+	};
 
 	return (
 		<>
@@ -68,10 +91,20 @@ const AvatarForm = ({ previousImage }: AvatarFormProps) => {
 							<Button
 								onClick={clear}
 								className="cursor-pointer">
-								Discard
+								<TrashIcon /> Discard
 							</Button>
 
-							<Button className="cursor-pointer">Uplode</Button>
+							<Button
+								onClick={uploadBtnFn}
+								className="cursor-pointer">
+								{isLoader ? (
+									<> Uploading...</>
+								) : (
+									<>
+										<UploadIcon /> Upload
+									</>
+								)}
+							</Button>
 						</div>
 					</div>
 				)}
