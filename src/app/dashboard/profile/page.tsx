@@ -32,7 +32,7 @@ const page = async () => {
 							</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<AvatarForm previousImage={user.image as string} />
+							<AvatarForm defaultImage={user.image as string} />
 						</CardContent>
 					</Card>
 

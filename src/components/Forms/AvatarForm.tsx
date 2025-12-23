@@ -4,15 +4,20 @@ import Image from "next/image";
 import { Button } from "../shadcnui/button";
 import { useState } from "react";
 import { useFilePicker } from "use-file-picker";
-import { ImageIcon, TrashIcon, UploadIcon } from "lucide-react";
+import {
+	ImageIcon,
+	LoaderCircleIcon,
+	TrashIcon,
+	UploadIcon,
+} from "lucide-react";
 import updateAvatar from "@/hooks/server/updateAvatar";
 import { toast } from "react-toastify";
 
 type AvatarFormProps = {
-	previousImage: string;
+	defaultImage: string;
 };
 
-const AvatarForm = ({ previousImage }: AvatarFormProps) => {
+const AvatarForm = ({ defaultImage }: AvatarFormProps) => {
 	const [isFile, setIsFile] = useState(false);
 
 	const [isLoader, setIsLoader] = useState(false);
@@ -35,17 +40,17 @@ const AvatarForm = ({ previousImage }: AvatarFormProps) => {
 		setIsLoader(true);
 		await new Promise((r) => setTimeout(r, 1500));
 
-		const { isSuccess, massage } = await updateAvatar(
+		const { isSuccess, message } = await updateAvatar(
 			plainFiles[0],
-			previousImage,
+			defaultImage,
 		);
 
 		if (!isSuccess) {
-			toast.error(massage);
+			toast.error(message);
 		}
 
 		if (isSuccess) {
-			toast.success(massage);
+			toast.success(message);
 			clear();
 		}
 
@@ -58,7 +63,7 @@ const AvatarForm = ({ previousImage }: AvatarFormProps) => {
 				{!isFile && (
 					<div className="grid justify-center gap-2">
 						<Image
-							src={`/upload/avatar/${previousImage}`}
+							src={`/upload/avatar/${defaultImage}`}
 							alt="Avatar Image"
 							width={240}
 							height={240}
@@ -98,7 +103,9 @@ const AvatarForm = ({ previousImage }: AvatarFormProps) => {
 								onClick={uploadBtnFn}
 								className="cursor-pointer">
 								{isLoader ? (
-									<> Uploading...</>
+									<>
+										<LoaderCircleIcon className="animate-spin" /> Uploading...
+									</>
 								) : (
 									<>
 										<UploadIcon /> Upload

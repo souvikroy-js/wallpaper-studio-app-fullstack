@@ -1,14 +1,16 @@
 "use client";
 
+import updateProfile from "@/hooks/server/updateProfile";
+import { NameType } from "@/lib/types";
+import { nameSchema } from "@/lib/zodSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2Icon, PencilLineIcon } from "lucide-react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { Button } from "../shadcnui/button";
 import { Field, FieldError, FieldLabel } from "../shadcnui/field";
 import { Input } from "../shadcnui/input";
-import { Button } from "../shadcnui/button";
-import { Loader2Icon, PencilLineIcon } from "lucide-react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { nameSchema } from "@/lib/zodSchema";
-import { NameType } from "@/lib/types";
-import { useState } from "react";
 
 type ProfileFormProps = {
 	userName: string;
@@ -20,7 +22,7 @@ const ProfileForm = ({ userName }: ProfileFormProps) => {
 	const {
 		handleSubmit,
 		control,
-		formState: { isSubmitting, isDirty },
+		formState: { isSubmitting, isDirty, isSubmitSuccessful },
 	} = useForm({
 		resolver: zodResolver(nameSchema),
 
@@ -34,7 +36,16 @@ const ProfileForm = ({ userName }: ProfileFormProps) => {
 	const nameHandeler = async (name: NameType) => {
 		await new Promise((r) => setTimeout(r, 1500));
 
-		console.log(name);
+		const { isSuccess, message } = await updateProfile(name);
+
+		if (!isSuccess) {
+			toast.error(message);
+		}
+
+		if (isSuccess) {
+			toast.success(message);
+			setIsEditing(false);
+		}
 	};
 
 	return (
@@ -78,7 +89,7 @@ const ProfileForm = ({ userName }: ProfileFormProps) => {
 				<Button
 					className="w-full cursor-pointer"
 					type="submit"
-					disabled={!isDirty}>
+					disabled={!isDirty || isSubmitSuccessful}>
 					{isSubmitting ? (
 						<>
 							<Loader2Icon className="animate-spin" />

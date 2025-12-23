@@ -1,4 +1,5 @@
 "use server";
+
 import sharp from "sharp";
 import { nanoid } from "nanoid";
 import { auth } from "@/lib/betterAuth/auth";
@@ -6,10 +7,10 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { rm } from "node:fs/promises";
 
-const updateAvatar = async (imgFile: File, previousImage: string) => {
+const updateAvatar = async (imgFile: File, defaultImage: string) => {
 	try {
-		if (previousImage !== "avatar.png") {
-			await rm(`public/upload/avatar/${previousImage}`);
+		if (defaultImage !== "avatar.png") {
+			await rm(`public/upload/avatar/${defaultImage}`);
 		}
 
 		const imgArrayBuffer = await imgFile.arrayBuffer();
@@ -39,14 +40,14 @@ const updateAvatar = async (imgFile: File, previousImage: string) => {
 
 		return {
 			isSuccess: true,
-			massage: "Image uploaded Succesfully 👍",
+			message: "Image uploaded Succesfully 👍",
 		};
 	} catch (error) {
 		console.log(error);
 
 		return {
 			isSuccess: false,
-			massage: "Image upload failed 😢",
+			message: "Image upload failed 😢",
 		};
 	}
 };
