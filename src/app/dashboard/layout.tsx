@@ -1,4 +1,4 @@
-import Header from "@/components/Header/dashboard_Header/Header";
+import Header from "@/components/Header/Dashboard_Header/Header";
 import { auth } from "@/lib/betterAuth/auth";
 import { PageLayoutProps } from "@/lib/types";
 import { headers } from "next/headers";

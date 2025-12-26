@@ -1,6 +1,7 @@
 import LogoutButton from "@/components/LogoutButton";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
 import Link from "next/link";
+import ProfileNavAvatar from "./ProfileNavAvatar";
 
 const Header = () => {
 	return (
@@ -19,7 +20,9 @@ const Header = () => {
 				<nav className="flex items-center gap-4">
 					<Link href={"/dashboard"}>Dashboard</Link>
 					<Link href={"/dashboard"}>Create</Link>
-					<Link href={"/dashboard/profile"}>profile</Link>
+					<Link href={"/dashboard/profile"}>
+						<ProfileNavAvatar />
+					</Link>
 
 					<LogoutButton />
 
