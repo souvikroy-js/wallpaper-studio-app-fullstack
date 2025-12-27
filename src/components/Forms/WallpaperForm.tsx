@@ -1,13 +1,22 @@
 "use client";
 
+import { SelectCategoryType } from "@/lib/types";
+import { selectCategorySchema } from "@/lib/zodSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ImageIcon, LoaderIcon, UploadIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useFilePicker } from "use-file-picker";
 import { Button } from "../shadcnui/button";
-import { Controller, useForm } from "react-hook-form";
 import { Field, FieldError, FieldLabel } from "../shadcnui/field";
-import { Input } from "../shadcnui/input";
-import { ImageIcon, LoaderIcon, UploadIcon } from "lucide-react";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "../shadcnui/select";
 
 const WallpaperForm = () => {
 	const [isFile, setIsFile] = useState(false);
@@ -29,12 +38,17 @@ const WallpaperForm = () => {
 	const {
 		handleSubmit,
 		control,
-		formState: { isSubmitting },
-	} = useForm({});
+		formState: { isSubmitting, isDirty },
+	} = useForm({
+		resolver: zodResolver(selectCategorySchema),
+		defaultValues: {
+			selectCategory: "",
+		},
+	});
 
-	const categoryHandeler = (cData: string) => {
+	const wallpaperHandeler = (selectCategory: SelectCategoryType) => {
 		console.log(plainFiles);
-		console.log(cData);
+		console.log(selectCategory);
 	};
 
 	return (
@@ -80,23 +94,30 @@ const WallpaperForm = () => {
 				)}
 
 				<form
-					onSubmit={handleSubmit(categoryHandeler)}
+					onSubmit={handleSubmit(wallpaperHandeler)}
 					className="grid gap-6"
 					noValidate>
 					{/* category field */}
 					<Controller
-						name="category"
+						name="selectCategory"
 						control={control}
 						render={({ field, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor={field.name}>Category</FieldLabel>
-								<Input
-									{...field}
-									id={field.name}
-									aria-invalid={fieldState.invalid}
-									placeholder="Enter your category"
-									autoComplete="category"
-								/>
+								<FieldLabel htmlFor={field.name}>
+									Category<span className="font-bold text-red-500">*</span>
+								</FieldLabel>
+
+								<Select
+									onValueChange={field.onChange}
+									defaultValue={field.value}>
+									<SelectTrigger>
+										<SelectValue placeholder="Choose category" />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectItem value="engineering">Engineering</SelectItem>
+									</SelectContent>
+								</Select>
+
 								{fieldState.invalid && (
 									<FieldError errors={[fieldState.error]} />
 								)}
@@ -107,7 +128,7 @@ const WallpaperForm = () => {
 					<Button
 						className="w-full cursor-pointer"
 						type="submit"
-						disabled={!isFile || isSubmitting}>
+						disabled={isSubmitting || !isDirty}>
 						{isSubmitting ? (
 							<>
 								<LoaderIcon className="animate-spin" /> Submitting...

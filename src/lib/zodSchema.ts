@@ -31,6 +31,19 @@ export const registerSchema = z
 		path: ["registerConfirmPassword"],
 	});
 
+// user profile name schema
 export const nameSchema = z.object({
 	name: z.string().min(2, { error: "Name must be minimum 2 characters long" }),
+});
+
+// user select category schema
+export const selectCategorySchema = z.object({
+	selectCategory: z.string().min(1, { error: "Invalid Category" }),
+});
+
+// user create category schema
+export const createCategorySchema = z.object({
+	createCategory: z
+		.string()
+		.min(3, { error: "Category must be minimum 2 characters long" }),
 });
