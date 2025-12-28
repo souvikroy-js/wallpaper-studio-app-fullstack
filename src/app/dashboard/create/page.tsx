@@ -1,3 +1,4 @@
+import CreateCategoryForm from "@/components/Forms/CreateCategoryForm";
 import WallpaperForm from "@/components/Forms/WallpaperForm";
 import {
 	Card,
@@ -21,7 +22,10 @@ const page = () => {
 					<CardContent>
 						<WallpaperForm />
 					</CardContent>
-					<CardFooter>create category</CardFooter>
+					<CardFooter className="grid place-items-center text-xl font-light">
+						Missing a category?
+						<CreateCategoryForm />
+					</CardFooter>
 				</Card>
 			</section>
 		</>
