@@ -2,6 +2,8 @@ import LogoutButton from "@/components/LogoutButton";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
 import Link from "next/link";
 import ProfileNavAvatar from "./ProfileNavAvatar";
+import { Suspense } from "react";
+import { Loader2Icon } from "lucide-react";
 
 const Header = () => {
 	return (
@@ -21,7 +23,18 @@ const Header = () => {
 					<Link href={"/dashboard"}>Dashboard</Link>
 					<Link href={"/dashboard/create"}>Create</Link>
 					<Link href={"/dashboard/profile"}>
-						<ProfileNavAvatar />
+						<Suspense
+							fallback={
+								<div className="flex h-8 w-8 items-center justify-center">
+									<Loader2Icon
+										height={32}
+										width={32}
+										className="animate-spin"
+									/>
+								</div>
+							}>
+							<ProfileNavAvatar />
+						</Suspense>
 					</Link>
 
 					<LogoutButton />

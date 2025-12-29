@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import updateAvatar from "@/hooks/server/updateAvatar";
 import { toast } from "react-toastify";
+import { FileSizeValidator } from "use-file-picker/validators";
 
 type AvatarFormProps = {
 	defaultImage: string;
@@ -22,19 +23,20 @@ const AvatarForm = ({ defaultImage }: AvatarFormProps) => {
 
 	const [isLoader, setIsLoader] = useState(false);
 
-	const { openFilePicker, filesContent, clear, plainFiles } = useFilePicker({
-		readAs: "DataURL",
-		accept: "image/*",
-		multiple: false,
-		// validators: [
-		// 	new FileSizeValidator({
-		// 		maxFileSize: 5 * 1024 * 1024,
-		// 	}),
-		// ],
+	const { openFilePicker, filesContent, clear, plainFiles, errors } =
+		useFilePicker({
+			readAs: "DataURL",
+			accept: "image/*",
+			multiple: false,
+			validators: [
+				new FileSizeValidator({
+					maxFileSize: 5 * 1024 * 1024,
+				}),
+			],
 
-		onFilesSuccessfullySelected: () => setIsFile(true),
-		onClear: () => setIsFile(false),
-	});
+			onFilesSuccessfullySelected: () => setIsFile(true),
+			onClear: () => setIsFile(false),
+		});
 
 	const uploadBtnFn = async () => {
 		setIsLoader(true);
@@ -91,6 +93,12 @@ const AvatarForm = ({ defaultImage }: AvatarFormProps) => {
 								className="aspect-square h-60 w-60 rounded-full object-cover"
 							/>
 						))}
+
+						{errors[0] && (
+							<div className="text-destructive text-center text-sm">
+								File is Too large (5mb)
+							</div>
+						)}
 
 						<div className="grid grid-cols-2 gap-2">
 							<Button
