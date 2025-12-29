@@ -7,8 +7,11 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/shadcnui/card";
+import prisma from "@/lib/database/dbClient";
 
-const page = () => {
+const page = async () => {
+	const allCategory = await prisma.category.findMany();
+
 	return (
 		<>
 			<section className="grid h-[90dvh] place-items-center">
@@ -20,7 +23,7 @@ const page = () => {
 					</CardHeader>
 
 					<CardContent>
-						<WallpaperForm />
+						<WallpaperForm categoryArray={allCategory} />
 					</CardContent>
 					<CardFooter className="grid place-items-center text-xl font-light">
 						Missing a category?

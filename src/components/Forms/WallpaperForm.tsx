@@ -1,6 +1,5 @@
 "use client";
 
-import { SelectCategoryType } from "@/lib/types";
 import { selectCategorySchema } from "@/lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImageIcon, LoaderIcon, UploadIcon } from "lucide-react";
@@ -17,8 +16,16 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "../shadcnui/select";
+import { SelectCategoryType } from "@/lib/types";
 
-const WallpaperForm = () => {
+export type WallpaperFormProps = {
+	categoryArray: {
+		categoryId: string;
+		categoryName: string;
+	}[];
+};
+
+const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 	const [isFile, setIsFile] = useState(false);
 
 	const { openFilePicker, filesContent, clear, plainFiles } = useFilePicker({
@@ -46,7 +53,7 @@ const WallpaperForm = () => {
 		},
 	});
 
-	const wallpaperHandeler = (selectCategory: SelectCategoryType) => {
+	const wallpaperHandeler = async (selectCategory: SelectCategoryType) => {
 		console.log(plainFiles);
 		console.log(selectCategory);
 	};
@@ -114,7 +121,13 @@ const WallpaperForm = () => {
 										<SelectValue placeholder="Choose category" />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value="engineering">Engineering</SelectItem>
+										{categoryArray.map(({ categoryId, categoryName }) => (
+											<SelectItem
+												key={categoryId}
+												value={categoryName}>
+												{categoryName}
+											</SelectItem>
+										))}
 									</SelectContent>
 								</Select>
 

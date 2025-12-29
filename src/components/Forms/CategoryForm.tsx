@@ -1,26 +1,40 @@
+import createCategory from "@/hooks/server/createCategory";
+import { CreateCategoryType } from "@/lib/types";
+import { createCategorySchema } from "@/lib/zodSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2Icon, UploadIcon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
+import { Button } from "../shadcnui/button";
 import { Field, FieldError, FieldLabel } from "../shadcnui/field";
 import { Input } from "../shadcnui/input";
-import { Button } from "../shadcnui/button";
-import { LoaderIcon, UploadIcon } from "lucide-react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createCategorySchema } from "@/lib/zodSchema";
-import { CreateCategoryType } from "@/lib/types";
+import { toast } from "react-toastify";
 
 const CategoryForm = () => {
 	const {
 		handleSubmit,
 		control,
 		formState: { isSubmitting },
+		reset,
 	} = useForm({
 		resolver: zodResolver(createCategorySchema),
 		defaultValues: {
-			createCategory: "",
+			category: "",
 		},
 	});
 
-	const categoryHandeler = (createCategory: CreateCategoryType) => {
-		console.log(createCategory);
+	const categoryHandeler = async ({ category }: CreateCategoryType) => {
+		await new Promise((r) => setTimeout(r, 1500));
+
+		const { isSuccess, message } = await createCategory(category);
+
+		if (!isSuccess) {
+			toast.error(message);
+		}
+
+		if (isSuccess) {
+			toast.success(message);
+			reset();
+		}
 	};
 	return (
 		<>
@@ -30,7 +44,7 @@ const CategoryForm = () => {
 				noValidate>
 				{/* category field */}
 				<Controller
-					name="createCategory"
+					name="category"
 					control={control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
@@ -53,7 +67,7 @@ const CategoryForm = () => {
 					disabled={isSubmitting}>
 					{isSubmitting ? (
 						<>
-							<LoaderIcon className="animate-spin" /> Submitting...
+							<Loader2Icon className="animate-spin" /> Submitting...
 						</>
 					) : (
 						<>

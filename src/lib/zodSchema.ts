@@ -43,7 +43,7 @@ export const selectCategorySchema = z.object({
 
 // user create category schema
 export const createCategorySchema = z.object({
-	createCategory: z
+	category: z
 		.string()
 		.min(3, { error: "Category must be minimum 2 characters long" }),
 });

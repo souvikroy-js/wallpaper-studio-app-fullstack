@@ -50,6 +50,25 @@ CREATE TABLE "verification" (
     "updatedAt" DATETIME NOT NULL
 );
 
+-- CreateTable
+CREATE TABLE "Wallpaper" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "image" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userId" TEXT NOT NULL,
+    "categoryCategoryId" TEXT NOT NULL,
+    CONSTRAINT "Wallpaper_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "Wallpaper_categoryCategoryId_fkey" FOREIGN KEY ("categoryCategoryId") REFERENCES "catagory" ("categoryId") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "catagory" (
+    "categoryId" TEXT NOT NULL PRIMARY KEY,
+    "categoryName" TEXT NOT NULL,
+    "categorySlug" TEXT NOT NULL
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
@@ -64,3 +83,9 @@ CREATE INDEX "account_userId_idx" ON "account"("userId");
 
 -- CreateIndex
 CREATE INDEX "verification_identifier_idx" ON "verification"("identifier");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "catagory_categoryId_key" ON "catagory"("categoryId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "catagory_categorySlug_key" ON "catagory"("categorySlug");
