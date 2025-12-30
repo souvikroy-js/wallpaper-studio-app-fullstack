@@ -25,6 +25,7 @@ const page = async () => {
 					<CardContent>
 						<WallpaperForm categoryArray={allCategory} />
 					</CardContent>
+
 					<CardFooter className="grid place-items-center text-xl font-light">
 						Missing a category?
 						<CreateCategoryForm />

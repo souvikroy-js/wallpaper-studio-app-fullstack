@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/database/dbClient";
+import { revalidatePath } from "next/cache";
 
 const createCategory = async (category: string) => {
 	console.log(category);
@@ -12,6 +13,9 @@ const createCategory = async (category: string) => {
 				categorySlug: category.toLowerCase(),
 			},
 		});
+
+		revalidatePath("/", "layout");
+
 		return {
 			isSuccess: true,
 			message: "Category created Succesfully 👍",

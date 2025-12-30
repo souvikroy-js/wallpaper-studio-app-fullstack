@@ -1,16 +1,15 @@
 "use client";
 
 import { dialogDrawerAtom } from "@/lib/atom";
+import { useAtom } from "jotai";
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "../shadcnui/dialog";
 import CategoryForm from "./CategoryForm";
-import { useAtom } from "jotai";
 
 const CreateCategoryForm = () => {
 	const [open, setOpen] = useAtom(dialogDrawerAtom);
@@ -19,9 +18,13 @@ const CreateCategoryForm = () => {
 		<Dialog
 			open={open}
 			onOpenChange={setOpen}>
-			<DialogTrigger className="cursor-pointer text-blue-500 underline">
+			{/* <DialogTrigger asChild> */}
+			<button
+				onClick={() => setOpen(true)}
+				className="cursor-pointer text-blue-500 underline">
 				Create Now
-			</DialogTrigger>
+			</button>
+			{/* </DialogTrigger> */}
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>
 					<DialogTitle>Create Category</DialogTitle>
