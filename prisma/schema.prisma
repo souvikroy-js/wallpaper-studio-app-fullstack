@@ -87,7 +87,7 @@ model Wallpaper {
 }
 
 model Category {
-  categoryId   String      @id @unique @default(uuid())
+  categoryId   String      @id @default(uuid())
   categoryName String
   categorySlug String      @unique
   wallpapers   Wallpaper[]

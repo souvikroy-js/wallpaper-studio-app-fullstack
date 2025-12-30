@@ -85,7 +85,4 @@ CREATE INDEX "account_userId_idx" ON "account"("userId");
 CREATE INDEX "verification_identifier_idx" ON "verification"("identifier");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "catagory_categoryId_key" ON "catagory"("categoryId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "catagory_categorySlug_key" ON "catagory"("categorySlug");

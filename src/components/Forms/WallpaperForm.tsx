@@ -17,6 +17,10 @@ import {
 	SelectValue,
 } from "../shadcnui/select";
 import { SelectCategoryType } from "@/lib/types";
+import { FileSizeValidator } from "use-file-picker/validators";
+import createWallpaper from "@/hooks/server/createWallpaper";
+import { toast } from "react-toastify";
+import { authClient } from "@/lib/betterAuth/auth-client";
 
 export type WallpaperFormProps = {
 	categoryArray: {
@@ -28,19 +32,20 @@ export type WallpaperFormProps = {
 const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 	const [isFile, setIsFile] = useState(false);
 
-	const { openFilePicker, filesContent, clear, plainFiles } = useFilePicker({
-		readAs: "DataURL",
-		accept: "image/*",
-		multiple: false,
-		// validators: [
-		// 	new FileSizeValidator({
-		// 		maxFileSize: 5 * 1024 * 1024,
-		// 	}),
-		// ],
+	const { openFilePicker, filesContent, clear, plainFiles, errors } =
+		useFilePicker({
+			readAs: "DataURL",
+			accept: "image/*",
+			multiple: false,
+			validators: [
+				new FileSizeValidator({
+					maxFileSize: 5 * 1024 * 1024,
+				}),
+			],
 
-		onFilesSuccessfullySelected: () => setIsFile(true),
-		onClear: () => setIsFile(false),
-	});
+			onFilesSuccessfullySelected: () => setIsFile(true),
+			onClear: () => setIsFile(false),
+		});
 
 	const {
 		handleSubmit,
@@ -53,9 +58,30 @@ const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 		},
 	});
 
-	const wallpaperHandeler = async (selectCategory: SelectCategoryType) => {
-		console.log(plainFiles);
-		console.log(selectCategory);
+	const wallpaperHandeler = async ({ selectCategory }: SelectCategoryType) => {
+		const { data } = await authClient.getSession();
+
+		if (data === null) {
+			return;
+		}
+
+		const {
+			user: { id },
+		} = data;
+
+		const { isSuccess, message } = await createWallpaper(
+			selectCategory,
+			plainFiles[0],
+			id,
+		);
+
+		if (!isSuccess) {
+			toast.error(message);
+		}
+
+		if (isSuccess) {
+			toast.success(message);
+		}
 	};
 
 	return (
@@ -92,6 +118,12 @@ const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 							/>
 						))}
 
+						{errors[0] && (
+							<div className="text-destructive text-center text-sm">
+								File is Too large (5mb)
+							</div>
+						)}
+
 						<Button
 							onClick={clear}
 							className="cursor-pointer">
@@ -124,7 +156,7 @@ const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 										{categoryArray.map(({ categoryId, categoryName }) => (
 											<SelectItem
 												key={categoryId}
-												value={categoryName}>
+												value={categoryId}>
 												{categoryName}
 											</SelectItem>
 										))}
