@@ -1,6 +1,45 @@
-const page = () => {
+import WallpaperCard from "@/components/WallpaperCard";
+import { auth } from "@/lib/betterAuth/auth";
+import prisma from "@/lib/database/dbClient";
+import { Metadata } from "next";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+	title: "Privat Wallpaper | Wallpaper Studio App",
+	description: "Privat Wallpaper page of Wallpaper Studio App",
+};
+
+const page = async () => {
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
+
+	if (!session) {
+		return redirect("/auth/login");
+	}
+
+	const { user } = session;
+
+	const userWallpapers = await prisma.wallpaper.findMany({
+		where: {
+			userId: user.id,
+		},
+		include: {
+			user: true,
+			category: true,
+		},
+	});
+
 	return (
-		<section className="grid h-[90dvh] place-items-center">privat</section>
+		<section className="grid grid-cols-3 gap-6">
+			{userWallpapers.map((wallpaperData) => (
+				<WallpaperCard
+					key={wallpaperData.id}
+					wallpaper={wallpaperData}
+				/>
+			))}
+		</section>
 	);
 };
 
