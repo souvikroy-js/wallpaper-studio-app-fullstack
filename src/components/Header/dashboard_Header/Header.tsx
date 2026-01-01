@@ -20,8 +20,16 @@ const Header = () => {
 				</Link>
 
 				<nav className="flex items-center gap-4">
-					<Link href={"/dashboard"}>Dashboard</Link>
-					<Link href={"/dashboard/create"}>Create</Link>
+					<Link
+						href={"/dashboard"}
+						className="hover:underline">
+						Dashboard
+					</Link>
+					<Link
+						href={"/dashboard/create"}
+						className="hover:underline">
+						Create
+					</Link>
 					<Link href={"/dashboard/profile"}>
 						<Suspense
 							fallback={

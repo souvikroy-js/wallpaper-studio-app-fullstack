@@ -1,18 +1,14 @@
 "use client";
 
-import Image from "next/image";
-import { Button } from "../shadcnui/button";
-import { useState } from "react";
-import { useFilePicker } from "use-file-picker";
-import {
-	ImageIcon,
-	LoaderCircleIcon,
-	TrashIcon,
-	UploadIcon,
-} from "lucide-react";
 import updateAvatar from "@/hooks/server/updateAvatar";
+import delayTime from "@/lib/delayTime";
+import { ImageIcon, Loader2Icon, TrashIcon, UploadIcon } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
 import { toast } from "react-toastify";
+import { useFilePicker } from "use-file-picker";
 import { FileSizeValidator } from "use-file-picker/validators";
+import { Button } from "../shadcnui/button";
 
 type AvatarFormProps = {
 	defaultImage: string;
@@ -40,7 +36,7 @@ const AvatarForm = ({ defaultImage }: AvatarFormProps) => {
 
 	const uploadBtnFn = async () => {
 		setIsLoader(true);
-		await new Promise((r) => setTimeout(r, 1500));
+		await delayTime(1500);
 
 		const { isSuccess, message } = await updateAvatar(
 			plainFiles[0],
@@ -60,71 +56,69 @@ const AvatarForm = ({ defaultImage }: AvatarFormProps) => {
 	};
 
 	return (
-		<>
-			<div className="">
-				{!isFile && (
-					<div className="grid justify-center gap-2">
+		<div className="">
+			{!isFile && (
+				<div className="grid justify-center gap-2">
+					<Image
+						src={`/upload/avatar/${defaultImage}`}
+						alt="Avatar Image"
+						width={240}
+						height={240}
+						className="aspect-square h-60 w-60 rounded-full object-cover"
+					/>
+
+					<Button
+						onClick={openFilePicker}
+						className="cursor-pointer">
+						<ImageIcon />
+						Choose Image
+					</Button>
+				</div>
+			)}
+
+			{isFile && (
+				<div className="grid justify-center gap-2">
+					{filesContent.map((file, idx) => (
 						<Image
-							src={`/upload/avatar/${defaultImage}`}
-							alt="Avatar Image"
+							key={idx}
+							src={file.content}
+							alt={file.name}
 							width={240}
 							height={240}
 							className="aspect-square h-60 w-60 rounded-full object-cover"
 						/>
+					))}
+
+					{errors[0] && (
+						<div className="text-destructive text-center text-sm">
+							File is Too large (5mb)
+						</div>
+					)}
+
+					<div className="grid grid-cols-2 gap-2">
+						<Button
+							onClick={clear}
+							className="cursor-pointer">
+							<TrashIcon /> Discard
+						</Button>
 
 						<Button
-							onClick={openFilePicker}
+							onClick={uploadBtnFn}
 							className="cursor-pointer">
-							<ImageIcon />
-							Choose Image
+							{isLoader ? (
+								<>
+									<Loader2Icon className="animate-spin" /> Uploading...
+								</>
+							) : (
+								<>
+									<UploadIcon /> Upload
+								</>
+							)}
 						</Button>
 					</div>
-				)}
-
-				{isFile && (
-					<div className="grid justify-center gap-2">
-						{filesContent.map((file, idx) => (
-							<Image
-								key={idx}
-								src={file.content}
-								alt={file.name}
-								width={240}
-								height={240}
-								className="aspect-square h-60 w-60 rounded-full object-cover"
-							/>
-						))}
-
-						{errors[0] && (
-							<div className="text-destructive text-center text-sm">
-								File is Too large (5mb)
-							</div>
-						)}
-
-						<div className="grid grid-cols-2 gap-2">
-							<Button
-								onClick={clear}
-								className="cursor-pointer">
-								<TrashIcon /> Discard
-							</Button>
-
-							<Button
-								onClick={uploadBtnFn}
-								className="cursor-pointer">
-								{isLoader ? (
-									<>
-										<LoaderCircleIcon className="animate-spin" /> Uploading...
-									</>
-								) : (
-									<>
-										<UploadIcon /> Upload
-									</>
-								)}
-							</Button>
-						</div>
-					</div>
-				)}
-			</div>
-		</>
+				</div>
+			)}
+		</div>
 	);
 };
 

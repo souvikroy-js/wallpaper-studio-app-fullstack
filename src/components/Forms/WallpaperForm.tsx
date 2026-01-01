@@ -1,12 +1,18 @@
 "use client";
 
+import createWallpaper from "@/hooks/server/createWallpaper";
+import { authClient } from "@/lib/betterAuth/auth-client";
+import delayTime from "@/lib/delayTime";
+import { SelectCategoryType } from "@/lib/types";
 import { selectCategorySchema } from "@/lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ImageIcon, LoaderIcon, UploadIcon } from "lucide-react";
+import { ImageIcon, Loader2Icon, UploadIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { useFilePicker } from "use-file-picker";
+import { FileSizeValidator } from "use-file-picker/validators";
 import { Button } from "../shadcnui/button";
 import { Field, FieldError, FieldLabel } from "../shadcnui/field";
 import {
@@ -16,11 +22,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "../shadcnui/select";
-import { SelectCategoryType } from "@/lib/types";
-import { FileSizeValidator } from "use-file-picker/validators";
-import createWallpaper from "@/hooks/server/createWallpaper";
-import { toast } from "react-toastify";
-import { authClient } from "@/lib/betterAuth/auth-client";
+import { useRouter } from "next/navigation";
 
 export type WallpaperFormProps = {
 	categoryArray: {
@@ -31,6 +33,8 @@ export type WallpaperFormProps = {
 
 const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 	const [isFile, setIsFile] = useState(false);
+
+	const { push } = useRouter();
 
 	const { openFilePicker, filesContent, clear, plainFiles, errors } =
 		useFilePicker({
@@ -51,6 +55,7 @@ const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 		handleSubmit,
 		control,
 		formState: { isSubmitting, isDirty },
+		reset,
 	} = useForm({
 		resolver: zodResolver(selectCategorySchema),
 		defaultValues: {
@@ -59,6 +64,7 @@ const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 	});
 
 	const wallpaperHandeler = async ({ selectCategory }: SelectCategoryType) => {
+		await delayTime(1500);
 		const { data } = await authClient.getSession();
 
 		if (data === null) {
@@ -81,6 +87,8 @@ const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 
 		if (isSuccess) {
 			toast.success(message);
+			push("/dashboard");
+			reset();
 		}
 	};
 
@@ -173,14 +181,14 @@ const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 					<Button
 						className="w-full cursor-pointer"
 						type="submit"
-						disabled={isSubmitting || !isDirty}>
+						disabled={isSubmitting || !isDirty || !plainFiles[0]}>
 						{isSubmitting ? (
 							<>
-								<LoaderIcon className="animate-spin" /> Submitting...
+								<Loader2Icon className="animate-spin" /> Creating...
 							</>
 						) : (
 							<>
-								<UploadIcon /> Submit
+								<UploadIcon /> Create
 							</>
 						)}
 					</Button>

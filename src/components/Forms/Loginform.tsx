@@ -13,6 +13,7 @@ import { Input } from "../shadcnui/input";
 import signIn from "@/hooks/signIn";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import delayTime from "@/lib/delayTime";
 
 const LoginForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -35,7 +36,8 @@ const LoginForm = () => {
 	});
 
 	const loginButtonHandeler = async (loginData: LoginType) => {
-		await new Promise((r) => setTimeout(r, 1500));
+		await delayTime(1500);
+
 		const { isSuccess, message } = await signIn(loginData);
 
 		if (!isSuccess) {
@@ -44,9 +46,8 @@ const LoginForm = () => {
 
 		if (isSuccess) {
 			toast.success(message);
-			reset();
-
 			replace("/dashboard");
+			reset();
 		}
 	};
 

@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { Button } from "../shadcnui/button";
 import { Field, FieldError, FieldLabel } from "../shadcnui/field";
 import { Input } from "../shadcnui/input";
+import delayTime from "@/lib/delayTime";
 
 type ProfileFormProps = {
 	userName: string;
@@ -34,7 +35,7 @@ const ProfileForm = ({ userName }: ProfileFormProps) => {
 	});
 
 	const nameHandeler = async (name: NameType) => {
-		await new Promise((r) => setTimeout(r, 1500));
+		await delayTime(1500);
 
 		const { isSuccess, message } = await updateProfile(name);
 

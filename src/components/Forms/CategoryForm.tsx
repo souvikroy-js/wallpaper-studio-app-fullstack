@@ -12,6 +12,7 @@ import { Input } from "../shadcnui/input";
 import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { dialogDrawerAtom } from "@/lib/atom";
+import delayTime from "@/lib/delayTime";
 
 const CategoryForm = () => {
 	const [, setOpen] = useAtom(dialogDrawerAtom);
@@ -28,7 +29,7 @@ const CategoryForm = () => {
 	});
 
 	const categoryHandeler = async ({ category }: CreateCategoryType) => {
-		await new Promise((r) => setTimeout(r, 1500));
+		await delayTime(1500);
 
 		const { isSuccess, message } = await createCategory(category);
 
