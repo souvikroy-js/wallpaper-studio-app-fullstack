@@ -59,7 +59,7 @@ CREATE TABLE "Wallpaper" (
     "userId" TEXT NOT NULL,
     "categoryCategoryId" TEXT NOT NULL,
     CONSTRAINT "Wallpaper_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "Wallpaper_categoryCategoryId_fkey" FOREIGN KEY ("categoryCategoryId") REFERENCES "catagory" ("categoryId") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Wallpaper_categoryCategoryId_fkey" FOREIGN KEY ("categoryCategoryId") REFERENCES "catagory" ("categoryId") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable

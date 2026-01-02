@@ -1,19 +1,18 @@
 "use client";
 
-import {
-	ArrowDownToLine,
-	Download,
-	Loader2Icon,
-	Trash2Icon,
-} from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "./shadcnui/avatar";
-import { Card, CardContent } from "./shadcnui/card";
+import delayTime from "@/lib/delayTime";
+import { ArrowDownToLine, Loader2Icon, Trash2Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "./shadcnui/button";
-import { Prisma } from "../../generated/prisma";
-import delayTime from "@/lib/delayTime";
 import { useState } from "react";
+import { Prisma } from "../../generated/prisma";
+import { Avatar, AvatarFallback, AvatarImage } from "./shadcnui/avatar";
+import { Button } from "./shadcnui/button";
+import { Card, CardContent } from "./shadcnui/card";
+
+import deleteWallpaper from "@/hooks/server/deleteWallpaper";
+import { format, formatDistanceToNow } from "date-fns";
+import { toast } from "react-toastify";
 
 type WallpaperCardProp = {
 	wallpaper: Prisma.WallpaperGetPayload<{
@@ -25,17 +24,10 @@ type WallpaperCardProp = {
 };
 
 const WallpaperCard = ({
-	wallpaper: {
-		image,
-		createdAt,
-		updatedAt,
-		categoryCategoryId,
-		user,
-		id,
-		category,
-	},
+	wallpaper: { image, createdAt, user, id, category },
 }: WallpaperCardProp) => {
-	const [isDownload, setIsDownload] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [isDelLoading, setIsDelLoading] = useState(false);
 
 	const userName = user.name;
 	const nameArray = userName.split(" ");
@@ -44,9 +36,25 @@ const WallpaperCard = ({
 	});
 
 	const downloadHandeler = async () => {
-		setIsDownload(true);
+		setIsLoading(true);
 		await delayTime(500);
-		setIsDownload(false);
+		setIsLoading(false);
+	};
+
+	const wallpaperDeleteHandler = async () => {
+		setIsDelLoading(true);
+		await delayTime(1500);
+
+		const { isSuccess, message } = await deleteWallpaper(id, image);
+
+		if (!isSuccess) {
+			toast.error(message);
+		}
+
+		if (isSuccess) {
+			toast.success(message);
+		}
+		setIsDelLoading(false);
 	};
 
 	return (
@@ -63,18 +71,26 @@ const WallpaperCard = ({
 
 							<div className="">
 								<div className="text-xl">{user.name}</div>
-								<div className="text-neutral-400">31/12/2025 </div>
+								<div className="text-neutral-400">
+									{format(new Date(createdAt), "dd MMM yyyy, hh:mm a")}{" "}
+								</div>
 							</div>
 						</div>
 
-						{/* <button className="flex cursor-pointer gap-1 text-red-600">
-							<Trash2Icon size={20} /> Delete
-						</button> */}
-
 						<Button
+							onClick={wallpaperDeleteHandler}
+							disabled={isDelLoading}
 							variant={"outline"}
-							className="border-2 border-red-500 text-red-500 dark:border-red-500">
-							<Trash2Icon size={20} /> Delete
+							className="cursor-pointer border-2 border-red-500 text-red-500 dark:border-red-500">
+							{isDelLoading ? (
+								<>
+									<Loader2Icon className="animate-spin" /> Deleting...
+								</>
+							) : (
+								<>
+									<Trash2Icon /> Delete
+								</>
+							)}
 						</Button>
 					</div>
 
@@ -98,15 +114,21 @@ const WallpaperCard = ({
 						</Button>
 
 						<div className="flex flex-col gap-3">
-							<h1 className="text-neutral-400">12 days ago</h1>
+							<h1 className="text-neutral-400">
+								{formatDistanceToNow(new Date(createdAt), {
+									addSuffix: true,
+									includeSeconds: true,
+								})}
+							</h1>
 							<Button
 								onClick={downloadHandeler}
+								disabled={isLoading}
 								variant={"outline"}
 								className="cursor-pointer border-2 border-black dark:border-white">
 								<a
 									href={`/upload/wallpaper/${image}`}
 									download={true}>
-									{isDownload ? (
+									{isLoading ? (
 										<div className="flex items-center gap-1 text-green-500">
 											<Loader2Icon className="animate-spin" />
 											Downloading...
