@@ -9,7 +9,6 @@ import { Prisma } from "../../generated/prisma";
 import { Avatar, AvatarFallback, AvatarImage } from "./shadcnui/avatar";
 import { Button } from "./shadcnui/button";
 import { Card, CardContent } from "./shadcnui/card";
-
 import deleteWallpaper from "@/hooks/server/deleteWallpaper";
 import { format, formatDistanceToNow } from "date-fns";
 import { toast } from "react-toastify";
@@ -64,15 +63,19 @@ const WallpaperCard = ({
 					<div className="flex h-20 items-start justify-between">
 						<div className="flex gap-4">
 							{/* Avatar */}
-							<Avatar className="h-14 w-14">
-								<AvatarImage src={`/upload/avatar/${user.image}`} />
-								<AvatarFallback>{charactersArray.join("")}</AvatarFallback>
-							</Avatar>
+							{
+								<Link href={`/user/${user.id}`}>
+									<Avatar className="h-14 w-14">
+										<AvatarImage src={`/upload/avatar/${user.image}`} />
+										<AvatarFallback>{charactersArray.join("")}</AvatarFallback>
+									</Avatar>
+								</Link>
+							}
 
 							<div className="">
 								<div className="text-xl">{user.name}</div>
 								<div className="text-neutral-400">
-									{format(new Date(createdAt), "dd MMM yyyy, hh:mm a")}{" "}
+									{format(new Date(createdAt), "dd MMM yyyy, hh:mm a")}
 								</div>
 							</div>
 						</div>
@@ -107,7 +110,7 @@ const WallpaperCard = ({
 							variant={"secondary"}
 							className="rounded-2xl">
 							<Link
-								href={"#"}
+								href={`/category/${category.categoryId}`}
 								className="hover:underline">
 								# {category.categoryName}
 							</Link>
