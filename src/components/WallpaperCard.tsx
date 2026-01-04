@@ -11,21 +11,22 @@ import { Prisma } from "../../generated/prisma";
 import { Avatar, AvatarFallback, AvatarImage } from "./shadcnui/avatar";
 import { Button } from "./shadcnui/button";
 import { Card, CardContent } from "./shadcnui/card";
+import DeleteButton from "./DeleteButton";
 
 type WallpaperCardProp = {
 	wallpaper: Prisma.WallpaperGetPayload<{
 		include: {
 			user: true;
 			category: true;
+			wallpaper: true;
 		};
 	}>;
 };
 
 const WallpaperCard = ({
-	wallpaper: { image, createdAt, user, id, category },
+	wallpaper: { image, createdAt, user, id, category, userId },
 }: WallpaperCardProp) => {
 	const [isLoading, setIsLoading] = useState(false);
-	const [isDelLoading, setIsDelLoading] = useState(false);
 
 	const userName = user.name;
 	const nameArray = userName.split(" ");
@@ -37,21 +38,6 @@ const WallpaperCard = ({
 		setIsLoading(true);
 
 		setIsLoading(false);
-	};
-
-	const wallpaperDeleteHandler = async () => {
-		setIsDelLoading(true);
-
-		const { isSuccess, message } = await deleteWallpaper(id, image);
-
-		if (!isSuccess) {
-			toast.error(message);
-		}
-
-		if (isSuccess) {
-			toast.success(message);
-		}
-		setIsDelLoading(false);
 	};
 
 	return (
@@ -76,21 +62,11 @@ const WallpaperCard = ({
 						</div>
 					</div>
 
-					<Button
-						onClick={wallpaperDeleteHandler}
-						disabled={isDelLoading}
-						variant={"outline"}
-						className="cursor-pointer border-2 border-red-500 text-red-500 dark:border-red-500">
-						{isDelLoading ? (
-							<>
-								<Loader2Icon className="animate-spin" /> Deleting...
-							</>
-						) : (
-							<>
-								<Trash2Icon /> Delete
-							</>
-						)}
-					</Button>
+					<DeleteButton
+						wallpaperImg={image}
+						wallpaperOwnerId={userId}
+						wallpaperId={id}
+					/>
 				</div>
 
 				<Image

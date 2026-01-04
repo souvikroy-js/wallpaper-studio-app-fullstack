@@ -4,11 +4,11 @@ import prisma from "@/lib/database/dbClient";
 import { revalidatePath } from "next/cache";
 import { rm } from "node:fs/promises";
 
-const deleteWallpaper = async (id: string, imageName: string) => {
+const deleteWallpaper = async (wallpaperId: string, imageName: string) => {
 	try {
 		await rm(`public/upload/wallpaper/${imageName}`);
 		await prisma.wallpaper.delete({
-			where: { id },
+			where: { id: wallpaperId },
 		});
 
 		revalidatePath("/dashboard", "layout");
