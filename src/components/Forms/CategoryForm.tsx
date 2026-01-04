@@ -1,18 +1,17 @@
 "use client";
 
 import createCategory from "@/hooks/server/createCategory";
+import { dialogDrawerAtom } from "@/lib/atom";
 import { CreateCategoryType } from "@/lib/types";
 import { createCategorySchema } from "@/lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAtom } from "jotai";
 import { Loader2Icon, UploadIcon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { Button } from "../shadcnui/button";
 import { Field, FieldError, FieldLabel } from "../shadcnui/field";
 import { Input } from "../shadcnui/input";
-import { toast } from "react-toastify";
-import { useAtom } from "jotai";
-import { dialogDrawerAtom } from "@/lib/atom";
-import delayTime from "@/lib/delayTime";
 
 const CategoryForm = () => {
 	const [, setOpen] = useAtom(dialogDrawerAtom);
@@ -29,8 +28,6 @@ const CategoryForm = () => {
 	});
 
 	const categoryHandeler = async ({ category }: CreateCategoryType) => {
-		await delayTime(1500);
-
 		const { isSuccess, message } = await createCategory(category);
 
 		if (!isSuccess) {

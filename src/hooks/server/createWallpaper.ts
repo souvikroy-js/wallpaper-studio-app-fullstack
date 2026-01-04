@@ -3,6 +3,7 @@
 import prisma from "@/lib/database/dbClient";
 import { nanoid } from "nanoid";
 import { revalidatePath } from "next/cache";
+import { rm } from "node:fs/promises";
 import sharp from "sharp";
 
 const createWallpaper = async (
@@ -42,6 +43,8 @@ const createWallpaper = async (
 		};
 	} catch (error) {
 		console.log(error);
+
+		await rm(`./public/upload/wallpaper/${wallpaperName}`);
 
 		return {
 			isSuccess: false,

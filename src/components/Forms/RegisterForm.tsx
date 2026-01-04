@@ -1,18 +1,17 @@
 "use client";
 
+import signUp from "@/hooks/signUp";
 import { RegisterType } from "@/lib/types";
 import { registerSchema } from "@/lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EyeIcon, EyeOffIcon, Loader2Icon, LockIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { Button } from "../shadcnui/button";
 import { Field, FieldError, FieldLabel } from "../shadcnui/field";
 import { Input } from "../shadcnui/input";
-import { EyeIcon, EyeOffIcon, Loader2Icon, LockIcon } from "lucide-react";
-import { Button } from "../shadcnui/button";
-import signUp from "@/hooks/signUp";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
-import delayTime from "@/lib/delayTime";
 
 const RegisterForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -36,8 +35,6 @@ const RegisterForm = () => {
 	});
 
 	const loginButtonHandeler = async (registerData: RegisterType) => {
-		await delayTime(1500);
-
 		const { isSuccess, message } = await signUp(registerData);
 
 		if (!isSuccess) {

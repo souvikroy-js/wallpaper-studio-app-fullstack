@@ -1,7 +1,6 @@
 "use client";
 
 import updateAvatar from "@/hooks/server/updateAvatar";
-import delayTime from "@/lib/delayTime";
 import { ImageIcon, Loader2Icon, TrashIcon, UploadIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -36,7 +35,6 @@ const AvatarForm = ({ defaultImage }: AvatarFormProps) => {
 
 	const uploadBtnFn = async () => {
 		setIsLoader(true);
-		await delayTime(1500);
 
 		const { isSuccess, message } = await updateAvatar(
 			plainFiles[0],

@@ -1,19 +1,18 @@
 "use client";
 
+import signIn from "@/hooks/signIn";
 import { LoginType } from "@/lib/types";
 import { loginSchema } from "@/lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeIcon, EyeOffIcon, Loader2Icon, LockIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { Button } from "../shadcnui/button";
 import { Checkbox } from "../shadcnui/checkbox";
 import { Field, FieldError, FieldLabel } from "../shadcnui/field";
 import { Input } from "../shadcnui/input";
-import signIn from "@/hooks/signIn";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
-import delayTime from "@/lib/delayTime";
 
 const LoginForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -36,8 +35,6 @@ const LoginForm = () => {
 	});
 
 	const loginButtonHandeler = async (loginData: LoginType) => {
-		await delayTime(1500);
-
 		const { isSuccess, message } = await signIn(loginData);
 
 		if (!isSuccess) {

@@ -2,26 +2,42 @@
 
 import prisma from "@/lib/database/dbClient";
 import { revalidatePath } from "next/cache";
+import { Prisma } from "../../../generated/prisma";
 
 const createCategory = async (category: string) => {
-	console.log(category);
-
 	try {
+		const newSlug = category
+			.trim()
+			.toLowerCase()
+			.normalize("NFD")
+			.replace(/[\u0300-\u036f]/g, "")
+			.replace(/[^a-z0-9\s-]/g, " ")
+			.replace(/[\s-]+/g, "-")
+			.replace(/^-+|-+$/g, "");
+
 		await prisma.category.create({
 			data: {
 				categoryName: category,
-				categorySlug: category.toLowerCase(),
+				categorySlug: newSlug,
 			},
 		});
 
-		revalidatePath("/", "layout");
+		revalidatePath("/studio/create");
 
 		return {
 			isSuccess: true,
 			message: "Category created Succesfully 👍",
 		};
 	} catch (error) {
-		console.log(error);
+		if (
+			error instanceof Prisma.PrismaClientKnownRequestError &&
+			error.code === "P2002"
+		) {
+			return {
+				isSuccess: false,
+				message: "A category with this name already exists 🔄",
+			};
+		}
 
 		return {
 			isSuccess: false,

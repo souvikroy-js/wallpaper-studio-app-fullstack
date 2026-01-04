@@ -2,12 +2,12 @@
 
 import createWallpaper from "@/hooks/server/createWallpaper";
 import { authClient } from "@/lib/betterAuth/auth-client";
-import delayTime from "@/lib/delayTime";
 import { SelectCategoryType } from "@/lib/types";
 import { selectCategorySchema } from "@/lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImageIcon, Loader2Icon, UploadIcon } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -22,7 +22,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "../shadcnui/select";
-import { useRouter } from "next/navigation";
 
 export type WallpaperFormProps = {
 	categoryArray: {
@@ -64,7 +63,6 @@ const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 	});
 
 	const wallpaperHandeler = async ({ selectCategory }: SelectCategoryType) => {
-		await delayTime(1500);
 		const { data } = await authClient.getSession();
 
 		if (data === null) {
