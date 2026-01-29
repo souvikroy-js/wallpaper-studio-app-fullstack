@@ -44,16 +44,14 @@ const page = async ({ params }: CategoryPageProps) => {
 	});
 
 	return (
-		<>
-			<section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-				{categoryWallpapers.map((wallpaperData) => (
-					<WallpaperCard
-						key={wallpaperData.id}
-						wallpaper={wallpaperData}
-					/>
-				))}
-			</section>
-		</>
+		<section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+			{categoryWallpapers.map((wallpaperData) => (
+				<WallpaperCard
+					key={wallpaperData.id}
+					wallpaper={wallpaperData}
+				/>
+			))}
+		</section>
 	);
 };
 

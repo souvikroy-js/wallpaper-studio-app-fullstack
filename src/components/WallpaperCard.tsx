@@ -1,24 +1,22 @@
 "use client";
 
-import deleteWallpaper from "@/hooks/server/deleteWallpaper";
 import { format, formatDistanceToNow } from "date-fns";
-import { ArrowDownToLine, Loader2Icon, Trash2Icon } from "lucide-react";
+import { ArrowDownToLine, Loader2Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { Prisma } from "../../generated/prisma";
+import DeleteButton from "./DeleteButton";
 import { Avatar, AvatarFallback, AvatarImage } from "./shadcnui/avatar";
 import { Button } from "./shadcnui/button";
 import { Card, CardContent } from "./shadcnui/card";
-import DeleteButton from "./DeleteButton";
 
 type WallpaperCardProp = {
 	wallpaper: Prisma.WallpaperGetPayload<{
 		include: {
 			user: true;
 			category: true;
-			wallpaper: true;
+			// wallpaper: true;
 		};
 	}>;
 };
