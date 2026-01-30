@@ -33,12 +33,18 @@ const page = async () => {
 
 	return (
 		<section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-			{userWallpapers.map((wallpaperData) => (
-				<WallpaperCard
-					key={wallpaperData.id}
-					wallpaper={wallpaperData}
-				/>
-			))}
+			{userWallpapers.length === 0 ? (
+				<p className="col-span-full text-center text-gray-500">
+					No wallpapers found 🙂
+				</p>
+			) : (
+				userWallpapers.map((wallpaperData) => (
+					<WallpaperCard
+						key={wallpaperData.id}
+						wallpaper={wallpaperData}
+					/>
+				))
+			)}
 		</section>
 	);
 };
