@@ -21,10 +21,9 @@ const DeleteButton = ({
 	const { data } = authClient.useSession();
 
 	if (!data) {
-		return;
+		return null;
 	}
 
-	// const id = data.user.id;
 	const {
 		user: { id },
 	} = data;
@@ -50,24 +49,21 @@ const DeleteButton = ({
 	};
 
 	return (
-		<>
-			<Button
-				onClick={wallpaperDeleteHandler}
-				disabled={isDelLoading}
-				variant={"outline"}
-				className="cursor-pointer border-2 border-red-500 text-red-500 dark:border-red-500">
-				{isDelLoading ? (
-					<>
-						<Loader2Icon className="animate-spin" /> Deleting...
-					</>
-				) : (
-					<>
-						<Trash2Icon /> Delete
-					</>
-				)}
-			</Button>
-			;
-		</>
+		<Button
+			onClick={wallpaperDeleteHandler}
+			disabled={isDelLoading}
+			variant={"outline"}
+			className="cursor-pointer border-2 border-red-500 text-red-500 dark:border-red-500">
+			{isDelLoading ? (
+				<>
+					<Loader2Icon className="animate-spin" /> Deleting...
+				</>
+			) : (
+				<>
+					<Trash2Icon /> Delete
+				</>
+			)}
+		</Button>
 	);
 };
 

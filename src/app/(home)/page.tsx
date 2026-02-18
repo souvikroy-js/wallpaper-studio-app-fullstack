@@ -10,7 +10,13 @@ export const metadata: Metadata = {
 const page = async () => {
 	const allWallpapers = await prisma.wallpaper.findMany({
 		include: {
-			user: true,
+			user: {
+				select: {
+					id: true,
+					name: true,
+					image: true,
+				},
+			},
 			category: true,
 		},
 	});

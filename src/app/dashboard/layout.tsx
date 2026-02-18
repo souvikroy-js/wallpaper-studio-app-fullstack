@@ -14,7 +14,7 @@ const layout = async ({ children }: PageLayoutProps) => {
 			redirect("/auth/login");
 		}
 	} catch (error) {
-		console.log(error);
+		console.error("Dashboard auth error:", error);
 		redirect("/auth/login");
 	}
 

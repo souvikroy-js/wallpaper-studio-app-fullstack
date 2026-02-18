@@ -33,7 +33,12 @@ const ProfileNavAvatar = async () => {
 
 			{/* Avatar */}
 			<Avatar className="bg-background relative">
-				<AvatarImage src={`/upload/avatar/${image}`} />
+				{image && (
+					<AvatarImage
+						src={`/upload/avatar/${image}`}
+						alt={`${name} avatar`}
+					/>
+				)}
 				<AvatarFallback>{charactersArray.join("")}</AvatarFallback>
 			</Avatar>
 		</div>

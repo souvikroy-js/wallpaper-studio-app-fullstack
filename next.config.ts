@@ -11,7 +11,6 @@ const nextConfig: NextConfig = {
 	typedRoutes: true,
 	images: {
 		remotePatterns: [new URL("https://placehold.co/**")],
-		dangerouslyAllowSVG: true,
 	},
 };
 

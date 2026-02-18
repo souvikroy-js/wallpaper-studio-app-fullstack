@@ -1,5 +1,3 @@
-"use server";
-
 import { Button } from "@/components/shadcnui/button";
 import { auth } from "@/lib/betterAuth/auth";
 import { headers } from "next/headers";
@@ -35,6 +33,7 @@ const SessionNavbar = async () => {
 					Login
 				</Link>
 			</Button>
+
 			<Button
 				asChild
 				variant={"outline"}>

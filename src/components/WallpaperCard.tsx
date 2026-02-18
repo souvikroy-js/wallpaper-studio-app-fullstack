@@ -14,9 +14,14 @@ import { Card, CardContent } from "./shadcnui/card";
 type WallpaperCardProp = {
 	wallpaper: Prisma.WallpaperGetPayload<{
 		include: {
-			user: true;
+			user: {
+				select: {
+					id: true;
+					name: true;
+					image: true;
+				};
+			};
 			category: true;
-			// wallpaper: true;
 		};
 	}>;
 };
@@ -52,7 +57,7 @@ const WallpaperCard = ({
 							</Link>
 						}
 
-						<div className="">
+						<div>
 							<div className="text-xl">{user.name}</div>
 							<div className="text-neutral-400">
 								{format(new Date(createdAt), "dd MMM yyyy, hh:mm a")}
@@ -94,14 +99,16 @@ const WallpaperCard = ({
 								includeSeconds: true,
 							})}
 						</h1>
+
 						<Button
+							asChild
 							onClick={downloadHandeler}
 							disabled={isLoading}
 							variant={"outline"}
 							className="cursor-pointer border-2 border-black dark:border-white">
 							<a
 								href={`/upload/wallpaper/${image}`}
-								download={true}>
+								download>
 								{isLoading ? (
 									<div className="flex items-center gap-1 text-green-500">
 										<Loader2Icon className="animate-spin" />

@@ -28,7 +28,7 @@ export const registerSchema = z
 	})
 	.refine((data) => data.password === data.confirmPassword, {
 		error: "Password didn't match",
-		path: ["registerConfirmPassword"],
+		path: ["confirmPassword"],
 	});
 
 // user profile name schema
@@ -45,5 +45,5 @@ export const selectCategorySchema = z.object({
 export const createCategorySchema = z.object({
 	category: z
 		.string()
-		.min(3, { error: "Category must be minimum 2 characters long" }),
+		.min(3, { error: "Category must be minimum 3 characters long" }),
 });

@@ -96,7 +96,7 @@ const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 				{!isFile && (
 					<div className="grid gap-2">
 						<Image
-							src={"https://placehold.co/1920x1080"}
+							src={"https://placehold.co/600x400/png"}
 							alt="Avatar Image"
 							width={640}
 							height={360}

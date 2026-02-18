@@ -97,7 +97,8 @@ const LoginForm = () => {
 
 							<button
 								type="button"
-								// variant="ghost"
+								aria-label={showPassword ? "Hide password" : "Show password"}
+								aria-pressed={showPassword}
 								onClick={() => setShowPassword(!showPassword)}
 								className="absolute top-1/2 right-2 h-6 w-6 -translate-y-1/2 cursor-pointer">
 								{showPassword ? (
@@ -122,6 +123,7 @@ const LoginForm = () => {
 						data-invalid={fieldState.invalid}
 						orientation={"horizontal"}>
 						<Checkbox
+							id={field.name}
 							checked={field.value}
 							onCheckedChange={field.onChange}
 							className="cursor-pointer"

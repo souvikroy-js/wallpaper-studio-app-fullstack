@@ -1,6 +1,7 @@
 import ThemeToggleButton from "@/components/ThemeToggleButton";
 import Link from "next/link";
 import SessionNavbar from "./SessionNavbar";
+import { Suspense } from "react";
 
 const Header = () => {
 	return (
@@ -23,7 +24,12 @@ const Header = () => {
 						Home
 					</Link>
 
-					<SessionNavbar />
+					<Suspense
+						fallback={
+							<div className="bg-muted h-9 w-20 animate-pulse rounded-md" />
+						}>
+						<SessionNavbar />
+					</Suspense>
 
 					<ThemeToggleButton />
 				</nav>

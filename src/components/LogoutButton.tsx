@@ -15,8 +15,6 @@ const LogoutButton = () => {
 	const logoutBtnFn = async () => {
 		setLoading(true);
 
-		await new Promise((r) => setTimeout(r, 1500));
-
 		const { isSuccess, message } = await signout();
 
 		if (!isSuccess) {
@@ -25,8 +23,8 @@ const LogoutButton = () => {
 
 		if (isSuccess) {
 			toast.success(message);
-
 			replace("/auth/login");
+			return;
 		}
 
 		setLoading(false);

@@ -1,9 +1,9 @@
 import LogoutButton from "@/components/LogoutButton";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
 import Link from "next/link";
-import ProfileNavAvatar from "./ProfileNavAvatar";
 import { Suspense } from "react";
 import { Loader2Icon } from "lucide-react";
+import ProfileNavAvatar from "./ProfileNavAvatar";
 
 const Header = () => {
 	return (

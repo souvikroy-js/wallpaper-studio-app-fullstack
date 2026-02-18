@@ -22,7 +22,8 @@ const ProfileForm = ({ userName }: ProfileFormProps) => {
 	const {
 		handleSubmit,
 		control,
-		formState: { isSubmitting, isDirty, isSubmitSuccessful },
+		formState: { isSubmitting, isDirty },
+		reset,
 	} = useForm({
 		resolver: zodResolver(nameSchema),
 
@@ -42,6 +43,7 @@ const ProfileForm = ({ userName }: ProfileFormProps) => {
 
 		if (isSuccess) {
 			toast.success(message);
+			reset(name);
 			setIsEditing(false);
 		}
 	};
@@ -87,7 +89,7 @@ const ProfileForm = ({ userName }: ProfileFormProps) => {
 				<Button
 					className="w-full cursor-pointer"
 					type="submit"
-					disabled={!isDirty || isSubmitSuccessful}>
+					disabled={!isDirty || isSubmitting}>
 					{isSubmitting ? (
 						<>
 							<Loader2Icon className="animate-spin" />

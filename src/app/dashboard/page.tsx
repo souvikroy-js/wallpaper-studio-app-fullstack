@@ -6,8 +6,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-	title: "Privat Wallpaper | Wallpaper Studio App",
-	description: "Privat Wallpaper page of Wallpaper Studio App",
+	title: "Private Wallpaper | Wallpaper Studio App",
+	description: "Private Wallpaper page of Wallpaper Studio App",
 };
 
 const page = async () => {

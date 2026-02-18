@@ -5,9 +5,9 @@ import { useAtom } from "jotai";
 import {
 	Dialog,
 	DialogContent,
-	DialogDescription,
 	DialogHeader,
 	DialogTitle,
+	DialogTrigger,
 } from "../shadcnui/dialog";
 import CategoryForm from "./CategoryForm";
 
@@ -18,21 +18,20 @@ const CreateCategoryForm = () => {
 		<Dialog
 			open={open}
 			onOpenChange={setOpen}>
-			{/* <DialogTrigger asChild> */}
-			<button
-				onClick={() => setOpen(true)}
-				className="cursor-pointer text-blue-500 underline">
-				Create Now
-			</button>
-			{/* </DialogTrigger> */}
-			<DialogContent className="sm:max-w-[425px]">
-				<DialogHeader>
-					<DialogTitle>Create Category</DialogTitle>
+			<DialogTrigger asChild>
+				<button className="cursor-pointer text-blue-500 underline">
+					Create Now
+				</button>
+			</DialogTrigger>
 
-					<DialogDescription className="hidden"></DialogDescription>
+			<DialogContent
+				aria-describedby={undefined}
+				className="sm:max-w-[425px]">
+				<DialogHeader className="flex items-center">
+					<DialogTitle>Create Category</DialogTitle>
 				</DialogHeader>
 
-				<div className="">
+				<div>
 					<CategoryForm />
 				</div>
 			</DialogContent>

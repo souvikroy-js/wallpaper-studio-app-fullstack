@@ -84,6 +84,9 @@ model Wallpaper {
   category           Category @relation(fields: [categoryCategoryId], references: [categoryId], onDelete: Cascade)
   userId             String
   categoryCategoryId String
+
+  @@index([userId])
+  @@index([categoryCategoryId])
 }
 
 model Category {
