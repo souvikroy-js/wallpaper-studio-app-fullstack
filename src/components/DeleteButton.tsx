@@ -6,16 +6,11 @@ import { toast } from "react-toastify";
 import { Button } from "./shadcnui/button";
 
 type DeleteButtonProps = {
-	wallpaperImg: string;
 	wallpaperOwnerId: string;
 	wallpaperId: string;
 };
 
-const DeleteButton = ({
-	wallpaperImg,
-	wallpaperOwnerId,
-	wallpaperId,
-}: DeleteButtonProps) => {
+const DeleteButton = ({ wallpaperOwnerId, wallpaperId }: DeleteButtonProps) => {
 	const [isDelLoading, setIsDelLoading] = useState(false);
 
 	const { data } = authClient.useSession();
@@ -33,19 +28,21 @@ const DeleteButton = ({
 	const wallpaperDeleteHandler = async () => {
 		setIsDelLoading(true);
 
-		const { isSuccess, message } = await deleteWallpaper(
-			wallpaperId,
-			wallpaperImg,
-		);
+		try {
+			const { isSuccess, message } = await deleteWallpaper(wallpaperId);
 
-		if (!isSuccess) {
-			toast.error(message);
-		}
+			if (!isSuccess) {
+				toast.error(message);
+			}
 
-		if (isSuccess) {
-			toast.success(message);
+			if (isSuccess) {
+				toast.success(message);
+			}
+		} catch {
+			toast.error("Wallpaper delete failed 😢");
+		} finally {
+			setIsDelLoading(false);
 		}
-		setIsDelLoading(false);
 	};
 
 	return (

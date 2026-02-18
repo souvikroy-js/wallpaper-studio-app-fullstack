@@ -10,9 +10,10 @@ const signIn = async ({ email, password, rememberMe }: LoginType) => {
 		});
 
 		if (error) {
+			console.error(error);
 			return {
 				isSuccess: false,
-				message: error.message,
+				message: "Invalid email or password.",
 			};
 		}
 

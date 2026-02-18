@@ -20,7 +20,7 @@ const CategoryForm = () => {
 		control,
 		formState: { isSubmitting },
 		reset,
-	} = useForm({
+	} = useForm<CreateCategoryType>({
 		resolver: zodResolver(createCategorySchema),
 		defaultValues: {
 			category: "",

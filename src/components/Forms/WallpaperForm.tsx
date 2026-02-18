@@ -126,7 +126,7 @@ const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 
 						{errors[0] && (
 							<div className="text-destructive text-center text-sm">
-								File is Too large (5mb)
+								File is Too large (5 MB)
 							</div>
 						)}
 
@@ -154,7 +154,7 @@ const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 
 								<Select
 									onValueChange={field.onChange}
-									defaultValue={field.value}>
+									value={field.value}>
 									<SelectTrigger>
 										<SelectValue placeholder="Choose category" />
 									</SelectTrigger>

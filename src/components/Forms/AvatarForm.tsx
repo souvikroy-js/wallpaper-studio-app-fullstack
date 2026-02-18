@@ -34,27 +34,35 @@ const AvatarForm = ({ defaultImage }: AvatarFormProps) => {
 		});
 
 	const uploadBtnFn = async () => {
+		if (isLoader || !plainFiles[0]) return;
 		setIsLoader(true);
-
-		const { isSuccess, message } = await updateAvatar(
-			plainFiles[0],
-			defaultImage,
-		);
-
-		if (!isSuccess) {
-			toast.error(message);
-		}
-
-		if (isSuccess) {
+		try {
+			const { isSuccess, message } = await updateAvatar(
+				plainFiles[0],
+				defaultImage,
+			);
+			if (!isSuccess) {
+				toast.error(message);
+				return;
+			}
 			toast.success(message);
 			clear();
+		} catch (error) {
+			toast.error("Avatar upload failed. Please try again.");
+			console.log(error);
+		} finally {
+			setIsLoader(false);
 		}
-
-		setIsLoader(false);
 	};
 
 	return (
-		<div className="">
+		<div>
+			{errors[0] && (
+				<div className="text-destructive text-center text-sm">
+					File is Too large (5 MB)
+				</div>
+			)}
+
 			{!isFile && (
 				<div className="grid justify-center gap-2">
 					<Image
@@ -89,7 +97,7 @@ const AvatarForm = ({ defaultImage }: AvatarFormProps) => {
 
 					{errors[0] && (
 						<div className="text-destructive text-center text-sm">
-							File is Too large (5mb)
+							File is Too large (5 MB)
 						</div>
 					)}
 
@@ -102,6 +110,7 @@ const AvatarForm = ({ defaultImage }: AvatarFormProps) => {
 
 						<Button
 							onClick={uploadBtnFn}
+							disabled={isLoader || !plainFiles[0]}
 							className="cursor-pointer">
 							{isLoader ? (
 								<>

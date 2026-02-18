@@ -18,14 +18,14 @@ const updateProfile = async ({ name }: NameType) => {
 
 		return {
 			isSuccess: true,
-			message: "User uploaded Succesfully 👍",
+			message: "Profile updated successfully 👍",
 		};
 	} catch (error) {
 		console.log(error);
 
 		return {
 			isSuccess: false,
-			message: "User upload failed 😢",
+			message: "Profile update failed 😢",
 		};
 	}
 };

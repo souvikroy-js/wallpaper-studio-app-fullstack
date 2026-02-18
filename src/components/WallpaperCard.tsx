@@ -51,7 +51,10 @@ const WallpaperCard = ({
 						{
 							<Link href={`/user/${user.id}`}>
 								<Avatar className="h-14 w-14">
-									<AvatarImage src={`/upload/avatar/${user.image}`} />
+									<AvatarImage
+										src={`/upload/avatar/${user.image}`}
+										alt={`${user.name} avatar`}
+									/>
 									<AvatarFallback>{charactersArray.join("")}</AvatarFallback>
 								</Avatar>
 							</Link>
@@ -66,7 +69,6 @@ const WallpaperCard = ({
 					</div>
 
 					<DeleteButton
-						wallpaperImg={image}
 						wallpaperOwnerId={userId}
 						wallpaperId={id}
 					/>

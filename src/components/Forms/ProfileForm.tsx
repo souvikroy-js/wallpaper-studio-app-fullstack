@@ -34,7 +34,7 @@ const ProfileForm = ({ userName }: ProfileFormProps) => {
 		mode: "all",
 	});
 
-	const nameHandeler = async (name: NameType) => {
+	const nameHandler = async (name: NameType) => {
 		const { isSuccess, message } = await updateProfile(name);
 
 		if (!isSuccess) {
@@ -51,7 +51,7 @@ const ProfileForm = ({ userName }: ProfileFormProps) => {
 	return (
 		<>
 			<form
-				onSubmit={handleSubmit(nameHandeler)}
+				onSubmit={handleSubmit(nameHandler)}
 				className="grid gap-6"
 				noValidate>
 				{/* Name field */}

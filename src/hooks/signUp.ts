@@ -21,7 +21,7 @@ const signUp = async ({ name, email, password }: RegisterType) => {
 			message: "User Registration Successfully 👍",
 		};
 	} catch (error) {
-		console.log(error);
+		console.error("Sign up failed:", error);
 
 		return {
 			isSuccess: false,
