@@ -76,7 +76,7 @@ const WallpaperCard = ({
 
 				<Image
 					src={`/upload/wallpaper/${image}`}
-					alt="wallpaperImg"
+					alt={`Wallpaper in ${category.categoryName} category`}
 					height={460}
 					width={460}
 					className="h-[460px] w-[460px] rounded-3xl object-cover"
@@ -103,7 +103,6 @@ const WallpaperCard = ({
 						</h1>
 
 						<Button
-							asChild
 							onClick={downloadHandeler}
 							disabled={isLoading}
 							variant={"outline"}

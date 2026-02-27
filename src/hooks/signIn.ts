@@ -22,7 +22,7 @@ const signIn = async ({ email, password, rememberMe }: LoginType) => {
 			message: "User Login Successfully 👍",
 		};
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 
 		return {
 			isSuccess: false,

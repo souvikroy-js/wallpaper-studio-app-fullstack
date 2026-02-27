@@ -34,7 +34,7 @@ const RegisterForm = () => {
 		mode: "all",
 	});
 
-	const loginButtonHandeler = async (registerData: RegisterType) => {
+	const registerHandler = async (registerData: RegisterType) => {
 		const { isSuccess, message } = await signUp(registerData);
 
 		if (!isSuccess) {
@@ -51,7 +51,7 @@ const RegisterForm = () => {
 
 	return (
 		<form
-			onSubmit={handleSubmit(loginButtonHandeler)}
+			onSubmit={handleSubmit(registerHandler)}
 			className="grid gap-6"
 			noValidate>
 			{/* Name field */}
@@ -114,7 +114,7 @@ const RegisterForm = () => {
 								aria-invalid={fieldState.invalid}
 								type={showPassword ? "text" : "password"}
 								placeholder="Enter your password"
-								autoComplete="current-password"
+								autoComplete="new-password"
 							/>
 							{/* Show / Hide Toggle */}
 

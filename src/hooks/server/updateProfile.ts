@@ -9,7 +9,7 @@ const updateProfile = async ({ name }: NameType) => {
 	try {
 		await auth.api.updateUser({
 			body: {
-				name: name,
+				name,
 			},
 			headers: await headers(),
 		});
@@ -21,7 +21,7 @@ const updateProfile = async ({ name }: NameType) => {
 			message: "Profile updated successfully 👍",
 		};
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 
 		return {
 			isSuccess: false,
