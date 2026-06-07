@@ -141,11 +141,11 @@ const LoginForm = () => {
 				disabled={isSubmitting}>
 				{isSubmitting ? (
 					<>
-						<Loader2Icon className="animate-spin" /> Submitting..
+						<Loader2Icon className="animate-spin" /> Logging in...
 					</>
 				) : (
 					<>
-						<LockIcon /> Submit
+						<LockIcon /> Login
 					</>
 				)}
 			</Button>

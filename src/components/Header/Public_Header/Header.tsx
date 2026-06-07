@@ -21,12 +21,6 @@ const Header = () => {
 				<nav className="flex items-center">
 					{/* Desktop Nav */}
 					<div className="hidden items-center gap-6 sm:flex md:flex">
-						<Link
-							href={"/"}
-							className="hover:underline">
-							Home
-						</Link>
-
 						<Suspense
 							fallback={
 								<div className="bg-muted h-9 w-20 animate-pulse rounded-md" />

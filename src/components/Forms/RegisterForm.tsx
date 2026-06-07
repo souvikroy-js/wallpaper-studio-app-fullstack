@@ -181,11 +181,11 @@ const RegisterForm = () => {
 				disabled={isSubmitting}>
 				{isSubmitting ? (
 					<>
-						<Loader2Icon className="animate-spin" /> Submitting..
+						<Loader2Icon className="animate-spin" /> Creating account...
 					</>
 				) : (
 					<>
-						<LockIcon /> Submit
+						<LockIcon /> Register
 					</>
 				)}
 			</Button>
