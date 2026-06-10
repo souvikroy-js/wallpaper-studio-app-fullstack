@@ -22,7 +22,7 @@ const layout = async ({ children }: PageLayoutProps) => {
 	return (
 		<>
 			<Header />
-			<main className="mx-auto max-w-7xl px-6 pt-20">{children}</main>
+			<main className="mx-auto max-w-7xl px-6 pt-20 pb-20 sm:pb-0">{children}</main>
 			<Footer />
 		</>
 	);

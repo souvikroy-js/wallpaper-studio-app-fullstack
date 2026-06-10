@@ -153,7 +153,7 @@ const RegisterForm = () => {
 								aria-invalid={fieldState.invalid}
 								type={showPassword ? "text" : "password"}
 								placeholder="Enter confirm password"
-								autoComplete="current-password"
+								autoComplete="new-password"
 							/>
 
 							{/* Show / Hide Toggle */}

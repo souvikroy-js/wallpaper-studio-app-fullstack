@@ -1,14 +1,13 @@
 import WallpaperCard from "@/components/WallpaperCard";
 import Pagination from "@/components/Pagination";
 import prisma from "@/lib/database/dbClient";
+import { WALLPAPER_PAGE_SIZE } from "@/lib/constants";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
 	title: "Public Wallpaper | Wallpaper Studio App",
 	description: "Public Wallpaper page of Wallpaper Studio App",
 };
-
-const PAGE_SIZE = 2;
 
 const page = async ({
 	searchParams,
@@ -18,26 +17,33 @@ const page = async ({
 	const { page: pageParam } = await searchParams;
 	const currentPage = Math.max(1, parseInt(pageParam ?? "1", 10));
 
-	const [allWallpapers, totalCount] = await prisma.$transaction([
-		prisma.wallpaper.findMany({
-			include: {
-				user: {
-					select: {
-						id: true,
-						name: true,
-						image: true,
-					},
-				},
-				category: true,
-			},
-			skip: (currentPage - 1) * PAGE_SIZE,
-			take: PAGE_SIZE,
-			orderBy: { createdAt: "desc" },
-		}),
-		prisma.wallpaper.count(),
-	]);
+	let allWallpapers: Awaited<ReturnType<typeof prisma.wallpaper.findMany<{ include: { user: { select: { id: true; name: true; image: true } }; category: true } }>>> = [];
+	let totalCount = 0;
 
-	const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+	try {
+		[allWallpapers, totalCount] = await prisma.$transaction([
+			prisma.wallpaper.findMany({
+				include: {
+					user: {
+						select: {
+							id: true,
+							name: true,
+							image: true,
+						},
+					},
+					category: true,
+				},
+				skip: (currentPage - 1) * WALLPAPER_PAGE_SIZE,
+				take: WALLPAPER_PAGE_SIZE,
+				orderBy: { createdAt: "desc" },
+			}),
+			prisma.wallpaper.count(),
+		]);
+	} catch (error) {
+		console.error("Database query error:", error);
+	}
+
+	const totalPages = Math.ceil(totalCount / WALLPAPER_PAGE_SIZE);
 
 	return (
 		<div className="space-y-16">
