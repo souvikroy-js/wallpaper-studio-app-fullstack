@@ -18,7 +18,7 @@ const Header = () => {
 						Wallpaper App
 					</h1>
 				</Link>
-
+				{/* 
 				<nav className="flex items-center gap-4">
 					<Link
 						href={"/dashboard"}
@@ -46,6 +46,39 @@ const Header = () => {
 					</Link>
 
 					<LogoutButton />
+
+					<ThemeToggleButton />
+				</nav> */}
+
+				<nav className="flex items-center gap-4">
+					<Link
+						href={"/dashboard"}
+						className="hidden hover:underline sm:block">
+						Dashboard
+					</Link>
+					<Link
+						href={"/dashboard/create"}
+						className="hidden hover:underline sm:block">
+						Create
+					</Link>
+					<Link href={"/dashboard/profile"}>
+						<Suspense
+							fallback={
+								<div className="flex h-8 w-8 items-center justify-center">
+									<Loader2Icon
+										height={32}
+										width={32}
+										className="animate-spin"
+									/>
+								</div>
+							}>
+							<ProfileNavAvatar />
+						</Suspense>
+					</Link>
+
+					<div className="hidden sm:block">
+						<LogoutButton />
+					</div>
 
 					<ThemeToggleButton />
 				</nav>

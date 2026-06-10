@@ -1,3 +1,4 @@
+import Footer from "@/components/Header/Dashboard_Header/Footer";
 import Header from "@/components/Header/Dashboard_Header/Header";
 import { auth } from "@/lib/betterAuth/auth";
 import { PageLayoutProps } from "@/lib/types";
@@ -22,6 +23,7 @@ const layout = async ({ children }: PageLayoutProps) => {
 		<>
 			<Header />
 			<main className="mx-auto max-w-7xl px-6 pt-20">{children}</main>
+			<Footer />
 		</>
 	);
 };

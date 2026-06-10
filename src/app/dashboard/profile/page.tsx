@@ -18,7 +18,7 @@ const page = async () => {
 
 	return (
 		<section className="grid h-[90dvh] place-items-center">
-			<Card className="w-lg items-center">
+			<Card className="w-sm items-center sm:w-lg">
 				<Card className="w-sm">
 					<CardHeader>
 						<CardTitle className="text-center text-3xl font-semibold">
