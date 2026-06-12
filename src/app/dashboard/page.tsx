@@ -28,41 +28,41 @@ const page = async ({
 	const { user } = session;
 
 	const { page: pageParam } = await searchParams;
-	const currentPage = Math.max(1, parseInt(pageParam ?? "1", 10));
+	const parsedPage = parseInt(pageParam ?? "1", 10);
+	const rawPage = Number.isNaN(parsedPage) ? 1 : Math.max(1, parsedPage);
 
 	let userWallpapers: Awaited<ReturnType<typeof prisma.wallpaper.findMany<{ include: { user: true; category: true } }>>> = [];
 	let totalCount = 0;
+	let totalPages = 1;
+	let currentPage = rawPage;
 
 	try {
-		[userWallpapers, totalCount] = await prisma.$transaction([
-			prisma.wallpaper.findMany({
-				where: {
-					userId: user.id,
-				},
-				include: {
-					user: true,
-					category: true,
-				},
-				skip: (currentPage - 1) * WALLPAPER_PAGE_SIZE,
-				take: WALLPAPER_PAGE_SIZE,
-				orderBy: { createdAt: "desc" },
-			}),
-			prisma.wallpaper.count({
-				where: {
-					userId: user.id,
-				},
-			}),
-		]);
+		totalCount = await prisma.wallpaper.count({
+			where: { userId: user.id },
+		});
+		totalPages = Math.max(1, Math.ceil(totalCount / WALLPAPER_PAGE_SIZE));
+		currentPage = Math.min(rawPage, totalPages);
+
+		userWallpapers = await prisma.wallpaper.findMany({
+			where: {
+				userId: user.id,
+			},
+			include: {
+				user: true,
+				category: true,
+			},
+			skip: (currentPage - 1) * WALLPAPER_PAGE_SIZE,
+			take: WALLPAPER_PAGE_SIZE,
+			orderBy: { createdAt: "desc" },
+		});
 	} catch (error) {
 		console.error("Database query error:", error);
 	}
 
-	const totalPages = Math.ceil(totalCount / WALLPAPER_PAGE_SIZE);
-
 	return (
 		<div className="space-y-16">
 			<section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-				{userWallpapers.length === 0 ? (
+
 					<p className="col-span-full text-center text-gray-500">
 						No wallpapers found 🙂
 					</p>
