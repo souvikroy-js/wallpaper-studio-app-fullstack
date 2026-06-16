@@ -37,8 +37,7 @@ const updateAvatar = async (imgFile: File, defaultImage: string) => {
 
 		const imgArrayBuffer = await imgFile.arrayBuffer();
 
-		const ext = ALLOWED_MIME_TYPES[imgFile.type];
-		const imageName = `${nanoid()}.${ext}`;
+		const imageName = `${nanoid()}.jpeg`;
 
 		await sharp(imgArrayBuffer)
 			.resize({ width: 240, height: 240 })
@@ -54,10 +53,10 @@ const updateAvatar = async (imgFile: File, defaultImage: string) => {
 
 		return {
 			isSuccess: true,
-			message: "Image uploaded Succesfully 👍",
+			message: "Avatar uploaded successfully 👍",
 		};
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 
 		return {
 			isSuccess: false,

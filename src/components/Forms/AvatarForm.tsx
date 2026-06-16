@@ -49,7 +49,7 @@ const AvatarForm = ({ defaultImage }: AvatarFormProps) => {
 			clear();
 		} catch (error) {
 			toast.error("Avatar upload failed. Please try again.");
-			console.log(error);
+			console.error(error);
 		} finally {
 			setIsLoader(false);
 		}
@@ -57,12 +57,6 @@ const AvatarForm = ({ defaultImage }: AvatarFormProps) => {
 
 	return (
 		<div>
-			{errors[0] && (
-				<div className="text-destructive text-center text-sm">
-					File is Too large (5 MB)
-				</div>
-			)}
-
 			{!isFile && (
 				<div className="grid justify-center gap-2">
 					<Image

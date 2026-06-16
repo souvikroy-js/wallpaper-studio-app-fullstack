@@ -27,7 +27,7 @@ const CategoryForm = () => {
 		},
 	});
 
-	const categoryHandeler = async ({ category }: CreateCategoryType) => {
+	const categoryHandler = async ({ category }: CreateCategoryType) => {
 		const { isSuccess, message } = await createCategory(category);
 
 		if (!isSuccess) {
@@ -42,7 +42,7 @@ const CategoryForm = () => {
 	};
 	return (
 		<form
-			onSubmit={handleSubmit(categoryHandeler)}
+			onSubmit={handleSubmit(categoryHandler)}
 			className="grid gap-6"
 			noValidate>
 			{/* category field */}

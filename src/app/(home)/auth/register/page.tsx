@@ -42,7 +42,7 @@ const page = () => {
 							className="mx-2 text-blue-600 underline hover:font-normal">
 							Login
 						</Link>
-						Now .
+						Now.
 					</div>
 				</CardFooter>
 			</Card>

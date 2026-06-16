@@ -62,10 +62,11 @@ const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 		},
 	});
 
-	const wallpaperHandeler = async ({ selectCategory }: SelectCategoryType) => {
+	const wallpaperHandler = async ({ selectCategory }: SelectCategoryType) => {
 		const { data } = await authClient.getSession();
 
 		if (data === null) {
+			toast.error("Session expired. Please log in again.");
 			return;
 		}
 
@@ -139,7 +140,7 @@ const WallpaperForm = ({ categoryArray }: WallpaperFormProps) => {
 				)}
 
 				<form
-					onSubmit={handleSubmit(wallpaperHandeler)}
+					onSubmit={handleSubmit(wallpaperHandler)}
 					className="grid gap-6"
 					noValidate>
 					{/* category field */}

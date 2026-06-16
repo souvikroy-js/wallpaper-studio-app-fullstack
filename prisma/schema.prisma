@@ -87,6 +87,9 @@ model Wallpaper {
 
   @@index([userId])
   @@index([categoryCategoryId])
+  @@index([createdAt])
+  @@index([userId, createdAt])
+  @@index([categoryCategoryId, createdAt])
 }
 
 model Category {

@@ -85,4 +85,19 @@ CREATE INDEX "account_userId_idx" ON "account"("userId");
 CREATE INDEX "verification_identifier_idx" ON "verification"("identifier");
 
 -- CreateIndex
+CREATE INDEX "Wallpaper_userId_idx" ON "Wallpaper"("userId");
+
+-- CreateIndex
+CREATE INDEX "Wallpaper_categoryCategoryId_idx" ON "Wallpaper"("categoryCategoryId");
+
+-- CreateIndex
+CREATE INDEX "Wallpaper_createdAt_idx" ON "Wallpaper"("createdAt");
+
+-- CreateIndex
+CREATE INDEX "Wallpaper_userId_createdAt_idx" ON "Wallpaper"("userId", "createdAt");
+
+-- CreateIndex
+CREATE INDEX "Wallpaper_categoryCategoryId_createdAt_idx" ON "Wallpaper"("categoryCategoryId", "createdAt");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "catagory_categorySlug_key" ON "catagory"("categorySlug");

@@ -11,6 +11,7 @@ const MobileMenu = ({ sessionNavbar }: { sessionNavbar: ReactNode }) => {
 		<>
 			{/* Hamburger Button */}
 			<button
+				type="button"
 				onClick={() => setMenuOpen(!menuOpen)}
 				className="cursor-pointer">
 				{menuOpen ? <X /> : <AlignJustify />}

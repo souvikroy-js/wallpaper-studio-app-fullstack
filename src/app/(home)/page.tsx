@@ -1,5 +1,7 @@
 import WallpaperCard from "@/components/WallpaperCard";
+import Pagination from "@/components/Pagination";
 import prisma from "@/lib/database/dbClient";
+import { WALLPAPER_PAGE_SIZE } from "@/lib/constants";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,35 +9,64 @@ export const metadata: Metadata = {
 	description: "Public Wallpaper page of Wallpaper Studio App",
 };
 
-const page = async () => {
-	const allWallpapers = await prisma.wallpaper.findMany({
-		include: {
-			user: {
-				select: {
-					id: true,
-					name: true,
-					image: true,
+const page = async ({
+	searchParams,
+}: {
+	searchParams: Promise<{ page?: string }>;
+}) => {
+	const { page: pageParam } = await searchParams;
+	const currentPage = Math.max(1, parseInt(pageParam ?? "1", 10));
+
+	let allWallpapers: Awaited<ReturnType<typeof prisma.wallpaper.findMany<{ include: { user: { select: { id: true; name: true; image: true } }; category: true } }>>> = [];
+	let totalCount = 0;
+
+	try {
+		[allWallpapers, totalCount] = await prisma.$transaction([
+			prisma.wallpaper.findMany({
+				include: {
+					user: {
+						select: {
+							id: true,
+							name: true,
+							image: true,
+						},
+					},
+					category: true,
 				},
-			},
-			category: true,
-		},
-	});
+				skip: (currentPage - 1) * WALLPAPER_PAGE_SIZE,
+				take: WALLPAPER_PAGE_SIZE,
+				orderBy: { createdAt: "desc" },
+			}),
+			prisma.wallpaper.count(),
+		]);
+	} catch (error) {
+		console.error("Database query error:", error);
+	}
+
+	const totalPages = Math.ceil(totalCount / WALLPAPER_PAGE_SIZE);
 
 	return (
-		<section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-			{allWallpapers.length === 0 ? (
-				<p className="col-span-full text-center text-gray-500">
-					No wallpapers found 🙂
-				</p>
-			) : (
-				allWallpapers.map((wallpaperData) => (
-					<WallpaperCard
-						key={wallpaperData.id}
-						wallpaper={wallpaperData}
-					/>
-				))
-			)}
-		</section>
+		<div className="space-y-16">
+			<section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+				{allWallpapers.length === 0 ? (
+					<p className="col-span-full text-center text-gray-500">
+						No wallpapers found 🙂
+					</p>
+				) : (
+					allWallpapers.map((wallpaperData) => (
+						<WallpaperCard
+							key={wallpaperData.id}
+							wallpaper={wallpaperData}
+						/>
+					))
+				)}
+			</section>
+
+			<Pagination
+				currentPage={currentPage}
+				totalPages={totalPages}
+			/>
+		</div>
 	);
 };
 

@@ -18,8 +18,8 @@ const page = async () => {
 
 	return (
 		<section className="grid h-[90dvh] place-items-center">
-			<Card className="w-lg items-center">
-				<Card className="w-sm">
+			<Card className="max-w-sm items-center sm:max-w-lg">
+				<Card className="max-w-sm">
 					<CardHeader>
 						<CardTitle className="text-center text-3xl font-semibold">
 							Profile Picture
@@ -31,7 +31,7 @@ const page = async () => {
 					</CardContent>
 				</Card>
 
-				<Card className="w-sm">
+				<Card className="max-w-sm">
 					<CardHeader>
 						<CardTitle className="text-center text-3xl font-semibold">
 							Profile Details

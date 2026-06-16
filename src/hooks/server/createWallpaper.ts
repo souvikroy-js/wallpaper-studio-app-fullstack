@@ -57,16 +57,16 @@ const createWallpaper = async (
 
 		return {
 			isSuccess: true,
-			message: "Wallpaper Created Succesfully 👍",
+			message: "Wallpaper Created Successfully 👍",
 		};
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 
 		await rm(`./public/upload/wallpaper/${wallpaperName}`, { force: true });
 
 		return {
 			isSuccess: false,
-			message: "Wallpaper Creat failed 😢",
+			message: "Wallpaper Create failed 😢",
 		};
 	}
 };

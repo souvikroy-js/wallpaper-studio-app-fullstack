@@ -39,11 +39,13 @@ const LogoutButton = () => {
 			className="cursor-pointer">
 			{loading ? (
 				<>
-					<Loader2Icon className="animate-spin" /> Logging out...
+					<Loader2Icon className="animate-spin" />
+					<span className="hidden sm:inline">Logging out...</span>
 				</>
 			) : (
 				<>
-					<LogOutIcon /> Logout
+					<LogOutIcon />
+					<span className="hidden sm:inline">Logout</span>
 				</>
 			)}
 		</Button>
